@@ -299,6 +299,14 @@
         .role-banner-desc { font-size: 12px; opacity: 0.75; line-height: 1.5; }
         .role-banner-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; padding: 2px 10px; border-radius: 10px; background: rgba(255,255,255,0.25); color: white; margin-bottom: 6px; }
         .role-banner-icon { position: absolute; right: 16px; bottom: 16px; opacity: 0.12; font-size: 64px; }
+.role-banner-resident { background: linear-gradient(135deg, #E53935, #C62828); color: white; }
+.role-banner-member { background: linear-gradient(135deg, #1565C0, #0D47A1); color: white; }
+.role-banner-grid { background: linear-gradient(135deg, #2E7D32, #1B5E20); color: white; }
+.role-banner-property { background: linear-gradient(135deg, #E65100, #BF360C); color: white; }
+.role-quick-row.show-resident, .role-stats.show-resident { display: grid !important; }
+body[data-role="resident"] .show-resident-only { display: block !important; }
+body[data-role="resident"] .role-stats.show-resident { display: grid !important; }
+body[data-role="resident"] .show-resident:not(.show-member-only):not(.show-grid-only):not(.show-property-only) { display: block !important; }
 
         /* 角色快捷入口 */
         .role-quick-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
@@ -495,7 +503,7 @@
         </div>
 
         <!-- ========== 居民+党员统计（评实效模块中的通用统计）============ -->
-        <div class="role-stats show-resident show-member show-resident-member show-resident-member" style="display:none;">
+        <div class="role-stats show-resident show-member show-resident-member show-resident-member">
             <div class="role-stat-item"><div class="role-stat-num">1,280</div><div class="role-stat-label">我的积分</div></div>
             <div class="role-stat-item"><div class="role-stat-num">8</div><div class="role-stat-label">我的诉求</div></div>
             <div class="role-stat-item"><div class="role-stat-num">5</div><div class="role-stat-label">荣誉</div></div>
@@ -547,7 +555,7 @@
         </div>
 
         <!-- ========== 常用服务（居民+党员）============ -->
-        <div class="show-resident show-member show-resident-member" style="display:none;">
+        <div class="show-resident show-member show-resident-member">
             <div class="card">
                 <div class="card-title">常用服务 <span class="card-more" onclick="switchModule('service')">全部 ›</span></div>
                 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
