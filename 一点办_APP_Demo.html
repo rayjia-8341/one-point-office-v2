@@ -27,13 +27,14 @@
         .main-content { padding: 12px 16px; padding-bottom: 90px; }
 
         /* 五大板块Tab */
-        .five-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 14px; background: white; padding: 10px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
-        .five-tab { text-align: center; cursor: pointer; padding: 8px 4px; border-radius: var(--radius-sm); transition: all 0.2s; }
-        .five-tab:hover { background: var(--bg-tertiary); }
-        .five-tab.active { background: var(--primary-light); }
-        .five-tab-icon { width: 36px; height: 36px; margin: 0 auto 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .five-tab-label { font-size: 10px; color: var(--text-secondary); font-weight: 600; }
-        .five-tab.active .five-tab-label { color: var(--primary); }
+        .five-tabs { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 10px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); scroll-snap-type: x mandatory; }
+        .five-tab { display: flex; flex-direction: row; align-items: center; gap: 6px; cursor: pointer; padding: 8px 12px; border-radius: 20px; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; scroll-snap-align: start; background: var(--bg-tertiary); }
+        .five-tab:hover { background: var(--primary-light); }
+        .five-tab.active { background: var(--primary); color: white; }
+        .five-tab-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .five-tab-label { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        .five-tab.active .five-tab-label { color: white; }
+.five-tab.active .five-tab-icon { background: rgba(255,255,255,0.25); }
 
         /* 模块内容 */
         .module-section { display: none; }
@@ -316,10 +317,10 @@ body[data-role="resident"] .show-resident:not(.show-member-only):not(.show-grid-
         .role-quick-desc { font-size: 9px; color: var(--text-tertiary); margin-top: 2px; }
 
         /* 角色统计 */
-        .role-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
-        .role-stat-item { background: white; border-radius: 10px; padding: 12px 6px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .role-stat-num { font-size: 18px; font-weight: 700; color: var(--primary); }
-        .role-stat-label { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+        .role-stats { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0 2px; }
+        .role-stat-item { background: white; border-radius: 10px; padding: 10px 14px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); flex-shrink: 0; flex: 1; min-width: 0; }
+        .role-stat-num { font-size: 16px; font-weight: 700; color: var(--primary); }
+        .role-stat-label { font-size: 9px; color: var(--text-tertiary); margin-top: 2px; white-space: nowrap; }
 
         /* 角色工单列表 */
         .role-work-item { display: flex; align-items: center; padding: 12px; background: white; border-radius: 10px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; }
