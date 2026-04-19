@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>一点办 - 政务服务</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #B22222; --primary-light: #FDF2F2; --primary-dark: #8B0000; --success: #2E7D32; --warning: #E65100; --danger: #C62828; --info: #1565C0; --bg-primary: #F8F9FA; --bg-secondary: #FFFFFF; --bg-tertiary: #F0F2F5; --text-primary: #1A1A2E; --text-secondary: #4A4A5A; --text-tertiary: #6B7280; --border: #E5E7EB; --shadow-sm: 0 1px 3px rgba(0,0,0,0.08); --shadow-md: 0 4px 12px rgba(0,0,0,0.1); --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --font-display: 'Noto Serif SC', serif; --font-body: 'Noto Sans SC', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+
+        .gov-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 12px 16px; color: white; }
+        .gov-header-content { display: flex; align-items: center; justify-content: space-between; }
+        .gov-logo { display: flex; align-items: center; gap: 10px; }
+        .gov-logo-icon { width: 36px; height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+        .gov-logo-icon svg { width: 36px !important; height: 36px !important; border-radius: 6px; }
+        .gov-logo-text { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+        .gov-right { display: flex; align-items: center; gap: 12px; }
+        .role-badge { background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 16px; font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .header-icon { font-size: 18px; cursor: pointer; }
+
+        .location-bar { background: white; padding: 10px 16px; display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+
+        .main-content { padding: 12px 16px; padding-bottom: 90px; }
+
+        /* 五大板块Tab */
+        .five-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 14px; background: white; padding: 10px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+        .five-tab { text-align: center; cursor: pointer; padding: 8px 4px; border-radius: var(--radius-sm); transition: all 0.2s; }
+        .five-tab:hover { background: var(--bg-tertiary); }
+        .five-tab.active { background: var(--primary-light); }
+        .five-tab-icon { width: 36px; height: 36px; margin: 0 auto 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .five-tab-label { font-size: 10px; color: var(--text-secondary); font-weight: 600; }
+        .five-tab.active .five-tab-label { color: var(--primary); }
+
+        /* 模块内容 */
+        .module-section { display: none; }
+        .module-section.active { display: block; }
+
+        /* 快捷入口 */
+        .quick-row { display: flex; gap: 10px; margin-bottom: 14px; }
+        .quick-item { flex: 1; background: white; border-radius: var(--radius-md); padding: 12px 10px; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); cursor: pointer; }
+        .quick-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .quick-text { font-size: 12px; font-weight: 600; }
+        .quick-desc { font-size: 10px; color: var(--text-tertiary); }
+
+        /* 卡片 */
+        .card { background: white; border-radius: var(--radius-md); padding: 14px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+        .card-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+        .card-more { font-size: 11px; color: var(--text-tertiary); cursor: pointer; }
+
+        /* 列表 */
+        .list-card { background: white; border-radius: var(--radius-md); margin-bottom: 10px; box-shadow: var(--shadow-sm); overflow: hidden; }
+        .list-item { display: flex; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--bg-tertiary); cursor: pointer; }
+        .list-item:last-child { border-bottom: none; }
+        .list-item:active { background: var(--bg-tertiary); }
+        .list-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 10px; flex-shrink: 0; }
+        .list-content { flex: 1; }
+        .list-content-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+        .list-content-desc { font-size: 11px; color: var(--text-tertiary); }
+        .list-arrow { font-size: 14px; color: var(--text-disabled); }
+
+        /* 进度条 */
+        .progress-bar { height: 4px; background: var(--bg-tertiary); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); border-radius: 2px; transition: width 0.3s; }
+
+        /* 状态标签 */
+        .list-status { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; white-space: nowrap; }
+        .status-pending { background: #FFF3E0; color: #E65100; }
+        .status-processing { background: #E3F2FD; color: #1565C0; }
+        .status-done { background: #E8F5E9; color: #2E7D32; }
+        .status-timeout { background: #FFEBEE; color: #C62828; }
+
+        /* 公告 */
+        .notice-item { padding: 10px 0; border-bottom: 1px solid var(--bg-tertiary); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .notice-item:last-child { border-bottom: none; }
+        .notice-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+        .notice-text { flex: 1; font-size: 12px; }
+
+        /* 党员/服务商卡片 */
+        .person-card { display: flex; align-items: center; padding: 10px; background: white; border-radius: var(--radius-md); margin-bottom: 8px; box-shadow: var(--shadow-sm); cursor: pointer; }
+        .person-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 10px; }
+        .person-info { flex: 1; }
+        .person-name { font-size: 13px; font-weight: 600; }
+        .person-desc { font-size: 10px; color: var(--text-tertiary); }
+        .person-score { text-align: right; }
+        .person-score-num { font-size: 14px; font-weight: 700; color: var(--primary); }
+        .person-score-label { font-size: 9px; color: var(--text-tertiary); }
+
+        /* 邻里帖子 */
+        .post-card { background: white; border-radius: var(--radius-md); margin-bottom: 10px; box-shadow: var(--shadow-sm); padding: 14px; }
+        .post-header { display: flex; align-items: center; margin-bottom: 8px; }
+        .post-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-right: 8px; }
+        .post-user { font-size: 12px; font-weight: 600; flex: 1; }
+        .post-time { font-size: 10px; color: var(--text-tertiary); }
+        .post-content { font-size: 12px; line-height: 1.6; margin-bottom: 8px; }
+        .post-images { display: flex; gap: 6px; margin-bottom: 8px; }
+        .post-image { width: 70px; height: 70px; border-radius: var(--radius-sm); background: var(--bg-tertiary); }
+        .post-footer { display: flex; gap: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+        .post-action { font-size: 11px; color: var(--text-tertiary); cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+        /* 底部导航 */
+        .tabbar { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; padding: 8px 0 24px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; border-top: 1px solid var(--border); }
+        .tabbar-item { flex: 1; text-align: center; cursor: pointer; }
+        .tabbar-icon { font-size: 20px; margin-bottom: 2px; }
+        .tabbar-label { font-size: 9px; color: var(--text-tertiary); }
+        .tabbar-item.active .tabbar-label { color: var(--primary); font-weight: 600; }
+
+        /* 浮动按钮 */
+        .fab { position: fixed; bottom: 90px; right: 16px; width: 48px; height: 48px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: var(--shadow-md); cursor: pointer; z-index: 99; }
+
+        /* 弹窗 */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 92%; max-width: 360px; max-height: 90vh; overflow-y: auto; border-radius: var(--radius-lg); }
+        .modal-header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 15px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { font-size: 18px; cursor: pointer; color: var(--text-tertiary); }
+        .modal-body { padding: 16px; }
+        .modal-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .modal-btn { flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; }
+        .modal-btn-cancel { background: var(--bg-tertiary); color: var(--text-secondary); }
+        .modal-btn-confirm { background: var(--primary); color: white; }
+
+        /* 表单 */
+        .form-group { margin-bottom: 14px; }
+        .form-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+        .form-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; }
+        .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; min-height: 80px; resize: none; font-family: var(--font-body); }
+        .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; background: white; }
+        .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+        .type-item { padding: 10px 4px; text-align: center; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+        .type-item.selected { border-color: var(--primary); background: var(--primary-light); }
+        .type-item-icon { font-size: 18px; margin-bottom: 2px; }
+        .type-item-label { font-size: 10px; color: var(--text-secondary); }
+
+        /* 按钮 */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-secondary); }
+
+        /* Toast */
+        .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 12px 24px; border-radius: var(--radius-md); font-size: 13px; z-index: 300; display: none; }
+        .toast.active { display: block; }
+
+        /* 颜色 */
+        .bg-red { background: var(--primary-light); }
+        .bg-orange { background: #FFF3E0; }
+        .bg-blue { background: #E3F2FD; }
+        .bg-green { background: #E8F5E9; }
+        .bg-purple { background: #F3E5F5; }
+        .bg-yellow { background: #FFFDE7; }
+
+        /* 统计行 */
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .stat-item { background: white; border-radius: var(--radius-md); padding: 12px 8px; text-align: center; box-shadow: var(--shadow-sm); }
+        .stat-value { font-size: 18px; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 10px; color: var(--text-tertiary); }
+
+        /* 红色便民仓 */
+        .warehouse-card { background: linear-gradient(135deg, #FFF5F5, #FFF0F0); border: 1px solid #FFCDD2; border-radius: var(--radius-md); padding: 14px; margin-bottom: 12px; }
+        .warehouse-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .warehouse-title { font-size: 14px; font-weight: 700; color: var(--primary); }
+        .warehouse-tag { background: var(--primary); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
+        .warehouse-desc { font-size: 11px; color: var(--text-tertiary); margin-bottom: 10px; }
+        .warehouse-providers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .provider-chip { background: white; border-radius: var(--radius-sm); padding: 8px 4px; text-align: center; border: 1px solid var(--border); cursor: pointer; }
+        .provider-chip:hover { border-color: var(--primary); }
+        .provider-chip-icon { font-size: 20px; margin-bottom: 2px; }
+        .provider-chip-name { font-size: 9px; color: var(--text-secondary); }
+        .verified-badge { display: inline-block; width: 10px; height: 10px; background: var(--success); border-radius: 50%; margin-left: 2px; }
+
+        /* 政务自助站 */
+        .gov-station-card { background: linear-gradient(135deg, #F0F4FF, #E8EFFF); border: 1px solid #BBDEFB; border-radius: var(--radius-md); padding: 14px; margin-bottom: 12px; }
+        .gov-station-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .gov-station-title { font-size: 14px; font-weight: 700; color: var(--info); }
+        .gov-station-tag { background: var(--info); color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
+        .gov-station-desc { font-size: 11px; color: var(--text-tertiary); margin-bottom: 10px; }
+        .gov-service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .gov-service-item { background: white; border-radius: var(--radius-sm); padding: 10px 4px; text-align: center; border: 1px solid var(--border); cursor: pointer; }
+        .gov-service-item:hover { border-color: var(--info); }
+        .gov-service-icon { font-size: 20px; margin-bottom: 2px; }
+        .gov-service-name { font-size: 9px; color: var(--text-secondary); }
+        .gov-service-new { background: var(--danger); color: white; font-size: 8px; padding: 1px 4px; border-radius: 8px; margin-left: 2px; }
+
+        /* 红色议事厅 */
+        .council-card { background: linear-gradient(135deg, #FFF8E1, #FFFDE7); border: 1px solid #FFE082; border-radius: var(--radius-md); padding: 14px; margin-bottom: 12px; }
+        .council-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .council-title { font-size: 14px; font-weight: 700; color: #E65100; }
+        .council-tag { background: #E65100; color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
+        .council-desc { font-size: 11px; color: var(--text-tertiary); margin-bottom: 10px; }
+        .council-vote-item { background: white; border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 8px; border: 1px solid #FFE082; cursor: pointer; }
+        .council-vote-item:active { background: #FFF8E1; }
+        .council-vote-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .council-vote-badge { background: #E65100; color: white; font-size: 9px; padding: 1px 6px; border-radius: 8px; }
+        .council-vote-progress { height: 3px; background: #FFE082; border-radius: 2px; overflow: hidden; margin-top: 6px; }
+        .council-vote-fill { height: 100%; background: #E65100; border-radius: 2px; transition: width 0.3s; }
+        .council-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .council-btn { flex: 1; padding: 8px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; border: none; }
+        .council-btn-primary { background: #E65100; color: white; }
+        .council-btn-outline { background: white; color: #E65100; border: 1px solid #E65100; }
+
+        /* 服务商详情 */
+        .provider-detail-header { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-tertiary); border-radius: var(--radius-md); margin-bottom: 14px; }
+        .provider-detail-avatar { width: 50px; height: 50px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .provider-detail-name { font-size: 15px; font-weight: 700; }
+        .provider-detail-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+        .provider-detail-verified { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--success); background: #E8F5E9; padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
+        .price-tag { display: inline-block; background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-sm); margin: 4px 0; }
+        .service-time-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-secondary); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 10px; margin-left: 8px; }
+        .rating-stars { color: #FFD700; font-size: 12px; }
+
+        /* 评分 */
+        .stars { color: #FFD700; font-size: 13px; }
+
+        /* 五大板块Tab显示控制 */
+        .five-tabs-wrap { display: block; }
+        .five-tabs-wrap.hidden { display: none; }
+
+        /* 页面标题栏 */
+        .page-header { display: flex; align-items: center; padding: 14px 16px; background: white; border-bottom: 1px solid var(--border); }
+        .page-back { font-size: 20px; margin-right: 10px; cursor: pointer; color: var(--primary); }
+        .page-title { font-size: 16px; font-weight: 700; color: var(--text-primary); flex: 1; }
+        .page-action { font-size: 13px; color: var(--primary); cursor: pointer; }
+
+        /* 首页横幅 */
+        .home-banner { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius-md); padding: 18px 16px; margin-bottom: 14px; color: white; position: relative; overflow: hidden; }
+        .home-banner::after { content: ''; position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.06); }
+        .home-banner-greet { font-size: 13px; opacity: 0.9; margin-bottom: 4px; }
+        .home-banner-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .home-banner-desc { font-size: 12px; opacity: 0.75; line-height: 1.5; }
+        .home-banner-logo { position: absolute; right: 16px; bottom: 16px; opacity: 0.15; font-size: 60px; }
+
+        /* 首页快捷入口 */
+        .home-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+        .home-quick-item { background: white; border-radius: var(--radius-md); padding: 14px 6px; text-align: center; box-shadow: var(--shadow-sm); cursor: pointer; }
+        .home-quick-icon { width: 40px; height: 40px; margin: 0 auto 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .home-quick-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+        .home-quick-desc { font-size: 9px; color: var(--text-tertiary); margin-top: 2px; }
+
+        /* 消息列表 */
+        .msg-tabs { display: flex; background: white; margin-bottom: 2px; }
+        .msg-tab { flex: 1; text-align: center; padding: 10px; font-size: 13px; font-weight: 600; color: var(--text-tertiary); cursor: pointer; border-bottom: 2px solid transparent; }
+        .msg-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .msg-item { display: flex; align-items: flex-start; padding: 12px 16px; background: white; border-bottom: 1px solid var(--border); cursor: pointer; }
+        .msg-item:active { background: var(--bg-tertiary); }
+        .msg-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 10px; flex-shrink: 0; }
+        .msg-body { flex: 1; }
+        .msg-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; display: flex; align-items: center; justify-content: space-between; }
+        .msg-time { font-size: 10px; color: var(--text-tertiary); font-weight: 400; }
+        .msg-preview { font-size: 12px; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .msg-badge { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; flex-shrink: 0; margin-left: 6px; }
+
+        /* 发布页 */
+        .publish-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 14px; }
+        .publish-item { background: white; border-radius: var(--radius-md); padding: 20px 16px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-sm); cursor: pointer; border: 1px solid transparent; }
+        .publish-item:active { background: var(--bg-tertiary); }
+        .publish-icon-wrap { width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .publish-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+        .publish-desc { font-size: 11px; color: var(--text-tertiary); }
+        .publish-arrow { font-size: 16px; color: var(--text-disabled); margin-left: auto; }
+    </style>
+</head>
+<body>
+    <!-- 顶部 -->
+    <div class="gov-header">
+        <div class="gov-header-content">
+            <div class="gov-logo">
+                <div class="gov-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="36" height="36">
+                      <defs>
+                        <linearGradient id="alr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C62828"/><stop offset="50%" stop-color="#B71C1C"/><stop offset="100%" stop-color="#7F0000"/></linearGradient>
+                        <linearGradient id="alg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE57F"/><stop offset="50%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient>
+                      </defs>
+                      <circle cx="100" cy="100" r="95" fill="url(#alr)"/>
+                      <g transform="translate(100,50)"><polygon points="0,-22 5,-8 19,-8 8,2 12,16 0,8 -12,16 -8,2 -19,-8 -5,-8" fill="url(#alg)"/></g>
+                      <path d="M100,140 C86,118 66,102 66,82 C66,64 82,50 100,68 C118,50 134,64 134,82 C134,102 114,118 100,140 Z" fill="white"/>
+                      <g transform="translate(100,100)"><circle cx="0" cy="0" r="8" fill="url(#alg)"/><circle cx="0" cy="0" r="5" fill="#B71C1C"/></g>
+                      <g transform="translate(100,100)"><g transform="translate(14,-14) rotate(-45)"><rect x="-4" y="-12" width="8" height="14" rx="4" fill="url(#alg)"/></g></g>
+                    </svg>
+                </div>
+                <div class="gov-logo-text">一点办</div>
+            </div>
+            <div class="gov-right">
+                <div class="role-badge" onclick="openModal('roleModal')"><span id="roleIcon">🏠</span><span id="roleName">居民</span> ▼</div>
+                <div class="header-icon" onclick="openModal('noticeModal')">🔔</div>
+                <div class="header-icon" onclick="switchTab('profile')">👤</div>
+            </div>
+        </div>
+    </div>
+    <div class="location-bar"><span>📍</span><span>忻府区长征街街道 - 幸福小区</span><span style="margin-left:auto;color:var(--primary);">🌡️16°C 晴</span></div>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+
+id="page-home">
+            <!-- 横幅 -->
+            <div class="home-banner">
+                <div class="home-banner-greet">居民，您好！</div>
+                <div class="home-banner-name">张先生</div>
+                <div class="home-banner-desc">幸福小区 3号楼2单元501室<br>有问题找支部，一点就办！</div>
+                <div class="home-banner-logo">🏠</div>
+            </div>
+
+            <!-- 首页快捷入口 -->
+            <div class="home-quick">
+                <div class="home-quick-item" onclick="switchTab('appeal')">
+                    <div class="home-quick-icon bg-orange">⚡</div>
+                    <div class="home-quick-label">马上办</div>
+                    <div class="home-quick-desc">报诉求</div>
+                </div>
+                <div class="home-quick-item" onclick="switchTab('service')">
+                    <div class="home-quick-icon bg-blue">🔧</div>
+                    <div class="home-quick-label">约服务</div>
+                    <div class="home-quick-desc">预约便民</div>
+                </div>
+                <div class="home-quick-item" onclick="openModal('councilVoteModal')">
+                    <div class="home-quick-icon bg-yellow">🗳️</div>
+                    <div class="home-quick-label">红色议事厅</div>
+                    <div class="home-quick-desc">参与投票</div>
+                </div>
+                <div class="home-quick-item" onclick="openModal('wishModal')">
+                    <div class="home-quick-icon bg-red">⭐</div>
+                    <div class="home-quick-label">微心愿</div>
+                    <div class="home-quick-desc">党员帮您</div>
+                </div>
+            </div>
+
+            
+            <!-- 常用服务 -->
+            <div class="card">
+                <div class="card-title">常用服务 <span class="card-more" onclick="switchModule('service')">全部 ›</span></div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">⚡</div><div style="font-size:10px;">报诉求</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('serviceModal')"><div style="font-size:20px;margin-bottom:2px;">🔧</div><div style="font-size:10px;">约服务</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('govStationModal')"><div style="font-size:20px;margin-bottom:2px;">🏛️</div><div style="font-size:10px;">政务站</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('warehouseModal')"><div style="font-size:20px;margin-bottom:2px;">🏪</div><div style="font-size:10px;">便民仓</div></div>
+                </div>
+            </div>
+
+            <!-- 最新公告 -->
+            <div class="card">
+                <div class="card-title">最新公告</div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">党员大会定于4月25日召开，请各位党员准时参加</div></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">小区公共收益使用方案投票进行中，欢迎参与</div></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">端午节活动开始报名，邻里相聚共庆佳节</div></div>
+            </div>
+        </div><!-- /page-home -->
+
+        <!-- ==================== 五大板块（Tab+内容）==================== -->
+        <div class="module-section" id="module-tabs">
+            <!-- 五大Tab -->
+            <div class="five-tabs" style="margin-bottom:14px;">
+                <div class="five-tab active" onclick="switchModule('party')">
+                    <div class="five-tab-icon bg-red">🎗️</div>
+                    <div class="five-tab-label">党群家</div>
+                </div>
+                <div class="five-tab" onclick="switchModule('appeal')">
+                    <div class="five-tab-icon bg-orange">⚡</div>
+                    <div class="five-tab-label">马上办</div>
+                </div>
+                <div class="five-tab" onclick="switchModule('service')">
+                    <div class="five-tab-icon bg-blue">📅</div>
+                    <div class="five-tab-label">约服务</div>
+                </div>
+                <div class="five-tab" onclick="switchModule('community')">
+                    <div class="five-tab-icon bg-purple">💬</div>
+                    <div class="five-tab-label">邻里圈</div>
+                </div>
+                <div class="five-tab" onclick="switchModule('rating')">
+                    <div class="five-tab-icon bg-green">⭐</div>
+                    <div class="five-tab-label">评实效</div>
+                </div>
+            </div>
+<div class="module-section" id="module-party">
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openModal('volunteerModal')">
+                    <div class="quick-icon bg-red">🙋</div>
+                    <div><div class="quick-text">志愿服务</div><div class="quick-desc">报名参与</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('wishModal')">
+                    <div class="quick-icon bg-purple">⭐</div>
+                    <div><div class="quick-text">微心愿</div><div class="quick-desc">党员帮您</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('letterModal')">
+                    <div class="quick-icon bg-blue">📮</div>
+                    <div><div class="quick-text">书记信箱</div><div class="quick-desc">直达书记</div></div>
+                </div>
+            </div>
+
+            <!-- 党组织信息 -->
+            <div class="card">
+                <div class="card-title">我的党组织</div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="font-size:32px;">🎗️</div>
+                    <div>
+                        <div style="font-size:14px;font-weight:600;">长征街街道党工委</div>
+                        <div style="font-size:12px;color:var(--text-tertiary);">幸福小区党支部</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">在册党员 86人 | 本月活动 3次</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 公告 -->
+            <div class="card">
+                <div class="card-title">组织动态 <span class="card-more">更多 ›</span></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">党员大会定于4月25日召开，请各位党员准时参加</div></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">幸福小区党支部获评2025年度优秀党支部</div></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">社区环境整治志愿活动开始报名，欢迎积极参与</div></div>
+            </div>
+
+            <!-- 党员服务榜 -->
+            <div class="card">
+                <div class="card-title">党员服务榜 TOP3 <span class="card-more">查看全部 ›</span></div>
+                <div class="person-card">
+                    <div class="person-avatar bg-red">陈</div>
+                    <div class="person-info"><div class="person-name">陈建国</div><div class="person-desc">党支部书记</div></div>
+                    <div class="person-score"><div class="person-score-num">328</div><div class="person-score-label">积分</div></div>
+                </div>
+                <div class="person-card">
+                    <div class="person-avatar bg-blue">王</div>
+                    <div class="person-info"><div class="person-name">王秀兰</div><div class="person-desc">组织委员</div></div>
+                    <div class="person-score"><div class="person-score-num">286</div><div class="person-score-label">积分</div></div>
+                </div>
+                <div class="person-card">
+                    <div class="person-avatar bg-green">李</div>
+                    <div class="person-info"><div class="person-name">李明华</div><div class="person-desc">宣传委员</div></div>
+                    <div class="person-score"><div class="person-score-num">254</div><div class="person-score-label">积分</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 马上办（诉求在线） ==================== -->
+        <div class="module-section" id="module-appeal">
+            <!-- 统计 -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">待处理</div></div>
+                <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">处理中</div></div>
+                <div class="stat-item"><div class="stat-value">156</div><div class="stat-label">已完成</div></div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" style="flex:2;" onclick="openModal('appealModal')">
+                    <div class="quick-icon bg-orange">✏️</div>
+                    <div><div class="quick-text">我要报诉求</div><div class="quick-desc">快速上报</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('serviceModal')">
+                    <div class="quick-icon bg-blue">📞</div>
+                    <div><div class="quick-text">联系物业</div><div class="quick-desc">一键拨打</div></div>
+                </div>
+            </div>
+
+            <!-- 诉求进度 -->
+            <div class="card">
+                <div class="card-title">我的诉求 <span class="card-more">全部 ›</span></div>
+                <div class="list-card" style="box-shadow:none;border-radius:0;">
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-orange">⚡</div>
+                        <div class="list-content">
+                            <div class="list-content-title">楼道灯不亮 - 3号楼2单元</div>
+                            <div class="list-content-desc">物业-李师傅 | 剩余4小时</div>
+                            <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+                        </div>
+                        <span class="list-status status-processing">处理中</span>
+                    </div>
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-green">✓</div>
+                        <div class="list-content">
+                            <div class="list-content-title">水管维修 - 3号楼2单元</div>
+                            <div class="list-content-desc">已完成 | 满意评价 ⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <span class="list-status status-done">已完成</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 诉求类型 -->
+            <div class="card">
+                <div class="card-title">快速上报</div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🏠</div><div style="font-size:10px;">物业</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🚔</div><div style="font-size:10px;">治安</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🌳</div><div style="font-size:10px;">环境</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🔧</div><div style="font-size:10px;">设施</div></div>
+                </div>
+            </div>
+
+            <!-- 诉求流程说明 -->
+            <div class="card">
+                <div class="card-title">办理流程</div>
+                <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-tertiary);padding:8px 0;">
+                    <span>① 提交诉求</span><span>›</span><span>② 自动派单</span><span>›</span><span>③ 处理反馈</span><span>›</span><span>④ 确认评价</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 约服务（便民在线） ==================== -->
+        <div class="module-section" id="module-service">
+            <!-- 统计 -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value">28</div><div class="stat-label">服务商家</div></div>
+                <div class="stat-item"><div class="stat-value">512</div><div class="stat-label">本月订单</div></div>
+                <div class="stat-item"><div class="stat-value">4.8</div><div class="stat-label">平均评分</div></div>
+            </div>
+
+            <!-- ========== 红色便民仓 ========== -->
+            <div class="warehouse-card">
+                <div class="warehouse-header">
+                    <div style="font-size:16px;">🏠</div>
+                    <div class="warehouse-title">红色便民仓</div>
+                    <div class="warehouse-tag">党支部审核</div>
+                </div>
+                <div class="warehouse-desc">整合辖区信誉良好的服务商，党支部审核准入、明码标价，一键预约上门服务</div>
+                <!-- 分类导航 -->
+                <div class="warehouse-providers">
+                    <div class="provider-chip" onclick="openWarehouseTab('all')"><div class="provider-chip-icon">🏪</div><div class="provider-chip-name">全部商家</div></div>
+                    <div class="provider-chip" onclick="openWarehouseTab('lock')"><div class="provider-chip-icon">🔓</div><div class="provider-chip-name">开锁</div></div>
+                    <div class="provider-chip" onclick="openWarehouseTab('repair')"><div class="provider-chip-icon">🔧</div><div class="provider-chip-name">维修</div></div>
+                    <div class="provider-chip" onclick="openWarehouseTab('clean')"><div class="provider-chip-icon">🧹</div><div class="provider-chip-name">家政</div></div>
+                </div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openProviderDetail('lock')">
+                    <div class="quick-icon bg-orange">🔓</div>
+                    <div><div class="quick-text">开锁服务</div><div class="quick-desc">24小时 · ¥50起</div></div>
+                </div>
+                <div class="quick-item" onclick="openProviderDetail('repair')">
+                    <div class="quick-icon bg-blue">🔧</div>
+                    <div><div class="quick-text">水电维修</div><div class="quick-desc">快速上门 · ¥80起</div></div>
+                </div>
+                <div class="quick-item" onclick="openProviderDetail('clean')">
+                    <div class="quick-icon bg-green">🧹</div>
+                    <div><div class="quick-text">家政保洁</div><div class="quick-desc">专业服务 · ¥60起</div></div>
+                </div>
+            </div>
+
+            <!-- 服务商列表 -->
+            <div class="card">
+                <div class="card-title">全部服务商 <span class="card-more" onclick="openModal('warehouseModal')">全部 ›</span></div>
+                <div class="person-card" onclick="openProviderDetail('lock')">
+                    <div class="person-avatar bg-orange">🔓</div>
+                    <div class="person-info">
+                        <div class="person-name">开锁王 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div>
+                        <div class="person-desc">⭐4.9 · 已服务328次 · 距您500m</div>
+                    </div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥50起</div></div>
+                </div>
+                <div class="person-card" onclick="openProviderDetail('repair')">
+                    <div class="person-avatar bg-blue">🔧</div>
+                    <div class="person-info">
+                        <div class="person-name">水电维修专业服务 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div>
+                        <div class="person-desc">⭐4.8 · 已服务156次 · 距您800m</div>
+                    </div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥80起</div></div>
+                </div>
+                <div class="person-card" onclick="openProviderDetail('clean')">
+                    <div class="person-avatar bg-green">🧹</div>
+                    <div class="person-info">
+                        <div class="person-name">家政公司 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div>
+                        <div class="person-desc">⭐4.7 · 已服务512次 · 距您600m</div>
+                    </div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥60起</div></div>
+                </div>
+            </div>
+
+            <!-- ========== 政务自助站 ========== -->
+            <div class="gov-station-card">
+                <div class="gov-station-header">
+                    <div style="font-size:16px;">🏛️</div>
+                    <div class="gov-station-title">政务自助站</div>
+                    <div class="gov-station-tag">指尖预约</div>
+                </div>
+                <div class="gov-station-desc">对接区行政审批局，链接社保、医保、公积金等高频事项，指尖预约、就近办理</div>
+                <div class="gov-service-grid">
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">🏥</div>
+                        <div class="gov-service-name">社保查询<span class="gov-service-new">热</span></div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">💊</div>
+                        <div class="gov-service-name">医保账户<span class="gov-service-new">热</span></div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">🏢</div>
+                        <div class="gov-service-name">公积金<span class="gov-service-new">新</span></div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">📄</div>
+                        <div class="gov-service-name">证明开具</div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">👤</div>
+                        <div class="gov-service-name">户籍办理</div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">🚗</div>
+                        <div class="gov-service-name">车管业务</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 邻里圈（互动在线） ==================== -->
+        <div class="module-section" id="module-community">
+            <!-- ========== 红色议事厅 ========== -->
+            <div class="council-card">
+                <div class="council-header">
+                    <div style="font-size:16px;">🎗️</div>
+                    <div class="council-title">红色议事厅</div>
+                    <div class="council-tag">党支部发起</div>
+                </div>
+                <div class="council-desc">针对公共收益使用、加装电梯等事项，由党支部线上发起投票、公示结果，解决上班族参与难问题</div>
+
+                <!-- 议事厅投票项目 -->
+                <div class="council-vote-item" onclick="openModal('councilVoteModal')">
+                    <div class="council-vote-header">
+                        <div class="council-vote-badge">投票中</div>
+                        <div style="font-size:13px;font-weight:600;flex:1;">小区公共收益使用方案</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 已有23人参与 · 截止04-25</div>
+                    <div class="council-vote-progress"><div class="council-vote-fill" style="width:58%;"></div></div>
+                    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:4px;">
+                        <span>方案A: 52%</span><span>方案B: 30%</span><span>方案C: 18%</span>
+                    </div>
+                </div>
+
+                <div class="council-vote-item" onclick="openModal('councilVoteModal')">
+                    <div class="council-vote-header">
+                        <div class="council-vote-badge">公示中</div>
+                        <div style="font-size:13px;font-weight:600;flex:1;">3号楼加装电梯方案</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 结果已公示</div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+                        <span style="font-size:11px;color:var(--success);background:#E8F5E9;padding:2px 8px;border-radius:8px;">✓ 已通过</span>
+                        <span style="font-size:11px;color:var(--text-tertiary);">同意率 78%</span>
+                    </div>
+                </div>
+
+                <div class="council-vote-item" onclick="openModal('councilVoteModal')">
+                    <div class="council-vote-header">
+                        <div class="council-vote-badge">征集意见</div>
+                        <div style="font-size:13px;font-weight:600;flex:1;">端午节活动安排</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 征集截止04-20</div>
+                </div>
+
+                <div class="council-actions">
+                    <button class="council-btn council-btn-primary" onclick="openModal('councilVoteModal')">参与投票</button>
+                    <button class="council-btn council-btn-outline" onclick="openModal('historyVoteModal')">往期结果</button>
+                </div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openModal('postModal')">
+                    <div class="quick-icon bg-blue">📝</div>
+                    <div><div class="quick-text">发布动态</div><div class="quick-desc">分享生活</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('互助Modal')">
+                    <div class="quick-icon bg-green">🤝</div>
+                    <div><div class="quick-text">邻里互助</div><div class="quick-desc">互帮互助</div></div>
+                </div>
+            </div>
+
+            <!-- 帖子 -->
+            <div class="card" style="padding:0;">
+                <div style="padding:14px 14px 0;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);">邻里动态</div>
+                <div class="post-card" style="box-shadow:none;border-radius:0;margin-bottom:0;">
+                    <div class="post-header">
+                        <div class="post-avatar">张</div>
+                        <div class="post-user">张先生</div>
+                        <div class="post-time">10分钟前</div>
+                    </div>
+                    <div class="post-content">大家好，谁家有闲置的折叠桌？借我用一下，周末家里来客人。谢谢！</div>
+                    <div class="post-footer">
+                        <div class="post-action">❤️ 5</div>
+                        <div class="post-action">💬 3</div>
+                        <div class="post-action" style="margin-left:auto;">🔄 转发</div>
+                    </div>
+                </div>
+                <div class="post-card" style="box-shadow:none;border-radius:0;margin-bottom:0;">
+                    <div class="post-header">
+                        <div class="post-avatar">李</div>
+                        <div class="post-user">李阿姨</div>
+                        <div class="post-time">30分钟前</div>
+                    </div>
+                    <div class="post-content">小区门口的菜鸟驿站今天开始试营业了，以后取快递方便多了！</div>
+                    <div class="post-images"><div class="post-image"></div><div class="post-image"></div></div>
+                    <div class="post-footer">
+                        <div class="post-action">❤️ 12</div>
+                        <div class="post-action">💬 8</div>
+                        <div class="post-action" style="margin-left:auto;">🔄 转发</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 评实效（评价在线） ==================== -->
+        <div class="module-section" id="module-rating">
+            <!-- 统计 -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value">1,280</div><div class="stat-label">我的积分</div></div>
+                <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">我的评价</div></div>
+                <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">荣誉</div></div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openModal('pointsModal')">
+                    <div class="quick-icon bg-yellow">🎁</div>
+                    <div><div class="quick-text">积分商城</div><div class="quick-desc">兑换好礼</div></div>
+                </div>
+                <div class="quick-item">
+                    <div class="quick-icon bg-green">🏆</div>
+                    <div><div class="quick-text">积分排名</div><div class="quick-desc">我的排名: #28</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('honorModal')">
+                    <div class="quick-icon bg-red">🏅</div>
+                    <div><div class="quick-text">我的荣誉</div><div class="quick-desc">查看证书</div></div>
+                </div>
+            </div>
+
+            <!-- 最新评价 -->
+            <div class="card">
+                <div class="card-title">我的服务评价 <span class="card-more">全部 ›</span></div>
+                <div class="list-card" style="box-shadow:none;border-radius:0;">
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-blue">🔧</div>
+                        <div class="list-content">
+                            <div class="list-content-title">对物业李师傅</div>
+                            <div class="list-content-desc"><span class="stars">★★★★★</span> 服务态度很好，很快修好了楼道灯</div>
+                        </div>
+                        <span style="font-size:10px;color:var(--text-tertiary);">04-17</span>
+                    </div>
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-orange">🔓</div>
+                        <div class="list-content">
+                            <div class="list-content-title">对开锁王</div>
+                            <div class="list-content-desc"><span class="stars">★★★★★</span> 师傅很专业，开锁很快，收费合理</div>
+                        </div>
+                        <span style="font-size:10px;color:var(--text-tertiary);">04-15</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 积分规则 -->
+            <div class="card">
+                <div class="card-title">积分规则</div>
+                <div class="list-card" style="box-shadow:none;border-radius:0;">
+                    <div class="list-item" style="padding:10px 0;">
+                        <div style="font-size:14px;margin-right:8px;">+5</div>
+                        <div class="list-content"><div class="list-content-title">上报诉求</div><div class="list-content-desc">+5分/次</div></div>
+                    </div>
+                    <div class="list-item" style="padding:10px 0;">
+                        <div style="font-size:14px;margin-right:8px;">+2</div>
+                        <div class="list-content"><div class="list-content-title">参与投票</div><div class="list-content-desc">+2分/次</div></div>
+                    </div>
+                    <div class="list-item" style="padding:10px 0;">
+                        <div style="font-size:14px;margin-right:8px;">+10</div>
+                        <div class="list-content"><div class="list-content-title">邻里互助</div><div class="list-content-desc">+10分/次</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 个人中心 ==================== -->
+        
+        </div><!-- /module-tabs -->
+
+<div class="module-section" id="page-message">
+            <div style="background:white;padding:14px 16px;font-size:15px;font-weight:700;border-bottom:1px solid var(--border);">消息中心</div>
+            <div class="msg-tabs">
+                <div class="msg-tab active" onclick="switchMsgTab('notice', this)">通知 <span style="background:var(--primary);color:white;padding:1px 5px;border-radius:8px;font-size:10px;margin-left:2px;">3</span></div>
+                <div class="msg-tab" onclick="switchMsgTab('appeal', this)">诉求反馈</div>
+                <div class="msg-tab" onclick="switchMsgTab('system', this)">系统</div>
+            </div>
+            <!-- 通知消息 -->
+            <div id="msg-content-notice">
+                <div class="msg-item" onclick="openModal('noticeDetail1Modal')">
+                    <div class="msg-avatar bg-orange">⚡</div>
+                    <div class="msg-body">
+                        <div class="msg-name">诉求已派单 <span class="msg-badge"></span></div>
+                        <div class="msg-time">10:30</div>
+                        <div class="msg-preview">您的诉求"楼道灯不亮"已派单给物业李师傅，预计30分钟内上门处理</div>
+                    </div>
+                </div>
+                <div class="msg-item" onclick="openModal('noticeDetail2Modal')">
+                    <div class="msg-avatar bg-green">✅</div>
+                    <div class="msg-body">
+                        <div class="msg-name">诉求处理完成 <span class="msg-badge"></span></div>
+                        <div class="msg-time">昨天 18:20</div>
+                        <div class="msg-preview">水管维修已完成，请到"我的评价"中对本次服务进行评价</div>
+                    </div>
+                </div>
+                <div class="msg-item">
+                    <div class="msg-avatar bg-purple">🗳️</div>
+                    <div class="msg-body">
+                        <div class="msg-name">新投票开始</div>
+                        <div class="msg-time">昨天 09:00</div>
+                        <div class="msg-preview">小区公共收益使用方案投票已开始，欢迎参与！</div>
+                    </div>
+                </div>
+                <div class="msg-item">
+                    <div class="msg-avatar bg-blue">🎁</div>
+                    <div class="msg-body">
+                        <div class="msg-name">积分到账</div>
+                        <div class="msg-time">04-16 14:00</div>
+                        <div class="msg-preview">+5积分 - 上报诉求奖励已到账，当前积分：1280分</div>
+                    </div>
+                </div>
+                <div class="msg-item">
+                    <div class="msg-avatar bg-yellow">🎗️</div>
+                    <div class="msg-body">
+                        <div class="msg-name">组织活动提醒</div>
+                        <div class="msg-time">04-15 10:00</div>
+                        <div class="msg-preview">社区环境整治志愿活动将于04-20举行，请提前报名</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 诉求反馈 -->
+            <div id="msg-content-appeal" style="display:none;">
+                <div class="msg-item">
+                    <div class="msg-avatar bg-orange">⚡</div>
+                    <div class="msg-body">
+                        <div class="msg-name">诉求处理中</div>
+                        <div class="msg-time">今天 10:30</div>
+                        <div class="msg-preview">楼道灯不亮 - 物业李师傅已接单，正在处理中</div>
+                    </div>
+                    <span class="list-status status-processing">处理中</span>
+                </div>
+                <div class="msg-item">
+                    <div class="msg-avatar bg-green">✅</div>
+                    <div class="msg-body">
+                        <div class="msg-name">水管维修 - 待评价</div>
+                        <div class="msg-time">昨天 18:20</div>
+                        <div class="msg-preview">物业已完成维修，请对服务进行评价</div>
+                    </div>
+                    <span class="list-status status-pending">待评价</span>
+                </div>
+                <div class="msg-item">
+                    <div class="msg-avatar bg-blue">📋</div>
+                    <div class="msg-body">
+                        <div class="msg-name">诉求已关闭</div>
+                        <div class="msg-time">04-10 15:00</div>
+                        <div class="msg-preview">门禁故障维修已完成，关闭</div>
+                    </div>
+                    <span class="list-status status-done">已完成</span>
+                </div>
+            </div>
+            <!-- 系统消息 -->
+            <div id="msg-content-system" style="display:none;">
+                <div class="msg-item">
+                    <div class="msg-avatar" style="background:#E8EAF6;color:#3F51B5;">ℹ️</div>
+                    <div class="msg-body">
+                        <div class="msg-name">系统升级通知</div>
+                        <div class="msg-time">04-15 08:00</div>
+                        <div class="msg-preview">"一点办"系统将于04-20 02:00-04:00进行升级维护，届时部分功能暂停使用</div>
+                    </div>
+                </div>
+                <div class="msg-item">
+                    <div class="msg-avatar" style="background:#E8F5E9;color:#4CAF50;">✓</div>
+                    <div class="msg-body">
+                        <div class="msg-name">账号安全</div>
+                        <div class="msg-time">04-12 10:00</div>
+                        <div class="msg-preview">您的账号已绑定手机号 138****1234，安全等级：高</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 发布页面 ==================== -->
+        
+<div class="module-section" id="page-publish">
+            <div style="background:white;padding:14px 16px;font-size:15px;font-weight:700;border-bottom:1px solid var(--border);">发布内容</div>
+            <div class="publish-grid">
+                <div class="publish-item" onclick="closePublish();openModal('appealModal')">
+                    <div class="publish-icon-wrap bg-orange">⚡</div>
+                    <div><div class="publish-title">报诉求</div><div class="publish-desc">上报问题，快速处理</div></div>
+                    <div class="publish-arrow">›</div>
+                </div>
+                <div class="publish-item" onclick="closePublish();openModal('serviceModal')">
+                    <div class="publish-icon-wrap bg-blue">🔧</div>
+                    <div><div class="publish-title">预约服务</div><div class="publish-desc">便民服务，一键预约</div></div>
+                    <div class="publish-arrow">›</div>
+                </div>
+                <div class="publish-item" onclick="closePublish();openModal('postModal')">
+                    <div class="publish-icon-wrap bg-purple">📝</div>
+                    <div><div class="publish-title">发动态</div><div class="publish-desc">分享邻里生活</div></div>
+                    <div class="publish-arrow">›</div>
+                </div>
+                <div class="publish-item" onclick="closePublish();openModal('wishModal')">
+                    <div class="publish-icon-wrap bg-yellow">⭐</div>
+                    <div><div class="publish-title">发心愿</div><div class="publish-desc">党员帮您圆梦</div></div>
+                    <div class="publish-arrow">›</div>
+                </div>
+                <div class="publish-item" onclick="closePublish();openModal('互助Modal')">
+                    <div class="publish-icon-wrap bg-green">🤝</div>
+                    <div><div class="publish-title">发互助</div><div class="publish-desc">邻里互帮互助</div></div>
+                    <div class="publish-arrow">›</div>
+                </div>
+                <div class="publish-item" onclick="closePublish();openModal('letterModal')">
+                    <div class="publish-icon-wrap bg-red">📮</div>
+                    <div><div class="publish-title">写信</div><div class="publish-desc">直达书记信箱</div></div>
+                    <div class="publish-arrow">›</div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:14px;">
+                <div class="card-title">最近发布</div>
+                <div class="list-item" style="padding:10px 0;" onclick="switchTab('message')">
+                    <div class="list-icon bg-orange">⚡</div>
+                    <div class="list-content"><div class="list-content-title">楼道灯不亮 - 3号楼2单元</div><div class="list-content-desc">今天 10:30 · 已派单</div></div>
+                    <span class="list-status status-processing">处理中</span>
+                </div>
+                <div class="list-item" style="padding:10px 0;">
+                    <div class="list-icon bg-purple">📝</div>
+                    <div class="list-content"><div class="list-content-title">邻里动态：折叠桌借用</div><div class="list-content-desc">今天 10:10 · 已发布</div></div>
+                    <span class="list-status status-done">正常</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 党群家（组织在线） ==================== -->
+        <div class="module-section" id="module-party">
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openModal('volunteerModal')">
+                    <div class="quick-icon bg-red">🙋</div>
+                    <div><div class="quick-text">志愿服务</div><div class="quick-desc">报名参与</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('wishModal')">
+                    <div class="quick-icon bg-purple">⭐</div>
+                    <div><div class="quick-text">微心愿</div><div class="quick-desc">党员帮您</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('letterModal')">
+                    <div class="quick-icon bg-blue">📮</div>
+                    <div><div class="quick-text">书记信箱</div><div class="quick-desc">直达书记</div></div>
+                </div>
+            </div>
+
+            <!-- 党组织信息 -->
+            <div class="card">
+                <div class="card-title">我的党组织</div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="font-size:32px;">🎗️</div>
+                    <div>
+                        <div style="font-size:14px;font-weight:600;">长征街街道党工委</div>
+                        <div style="font-size:12px;color:var(--text-tertiary);">幸福小区党支部</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">在册党员 86人 | 本月活动 3次</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 公告 -->
+            <div class="card">
+                <div class="card-title">组织动态 <span class="card-more">更多 ›</span></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">党员大会定于4月25日召开，请各位党员准时参加</div></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">幸福小区党支部获评2025年度优秀党支部</div></div>
+                <div class="notice-item"><div class="notice-dot"></div><div class="notice-text">社区环境整治志愿活动开始报名，欢迎积极参与</div></div>
+            </div>
+
+            <!-- 党员服务榜 -->
+            <div class="card">
+                <div class="card-title">党员服务榜 TOP3 <span class="card-more">查看全部 ›</span></div>
+                <div class="person-card">
+                    <div class="person-avatar bg-red">陈</div>
+                    <div class="person-info"><div class="person-name">陈建国</div><div class="person-desc">党支部书记</div></div>
+                    <div class="person-score"><div class="person-score-num">328</div><div class="person-score-label">积分</div></div>
+                </div>
+                <div class="person-card">
+                    <div class="person-avatar bg-blue">王</div>
+                    <div class="person-info"><div class="person-name">王秀兰</div><div class="person-desc">组织委员</div></div>
+                    <div class="person-score"><div class="person-score-num">286</div><div class="person-score-label">积分</div></div>
+                </div>
+                <div class="person-card">
+                    <div class="person-avatar bg-green">李</div>
+                    <div class="person-info"><div class="person-name">李明华</div><div class="person-desc">宣传委员</div></div>
+                    <div class="person-score"><div class="person-score-num">254</div><div class="person-score-label">积分</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 马上办（诉求在线） ==================== -->
+        <div class="module-section" id="module-appeal">
+            <!-- 统计 -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">待处理</div></div>
+                <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">处理中</div></div>
+                <div class="stat-item"><div class="stat-value">156</div><div class="stat-label">已完成</div></div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" style="flex:2;" onclick="openModal('appealModal')">
+                    <div class="quick-icon bg-orange">✏️</div>
+                    <div><div class="quick-text">我要报诉求</div><div class="quick-desc">快速上报</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('serviceModal')">
+                    <div class="quick-icon bg-blue">📞</div>
+                    <div><div class="quick-text">联系物业</div><div class="quick-desc">一键拨打</div></div>
+                </div>
+            </div>
+
+            <!-- 诉求进度 -->
+            <div class="card">
+                <div class="card-title">我的诉求 <span class="card-more">全部 ›</span></div>
+                <div class="list-card" style="box-shadow:none;border-radius:0;">
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-orange">⚡</div>
+                        <div class="list-content">
+                            <div class="list-content-title">楼道灯不亮 - 3号楼2单元</div>
+                            <div class="list-content-desc">物业-李师傅 | 剩余4小时</div>
+                            <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+                        </div>
+                        <span class="list-status status-processing">处理中</span>
+                    </div>
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-green">✓</div>
+                        <div class="list-content">
+                            <div class="list-content-title">水管维修 - 3号楼2单元</div>
+                            <div class="list-content-desc">已完成 | 满意评价 ⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <span class="list-status status-done">已完成</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 诉求类型 -->
+            <div class="card">
+                <div class="card-title">快速上报</div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🏠</div><div style="font-size:10px;">物业</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🚔</div><div style="font-size:10px;">治安</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🌳</div><div style="font-size:10px;">环境</div></div>
+                    <div style="text-align:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;" onclick="openModal('appealModal')"><div style="font-size:20px;margin-bottom:2px;">🔧</div><div style="font-size:10px;">设施</div></div>
+                </div>
+            </div>
+
+            <!-- 诉求流程说明 -->
+            <div class="card">
+                <div class="card-title">办理流程</div>
+                <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-tertiary);padding:8px 0;">
+                    <span>① 提交诉求</span><span>›</span><span>② 自动派单</span><span>›</span><span>③ 处理反馈</span><span>›</span><span>④ 确认评价</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 约服务（便民在线） ==================== -->
+        <div class="module-section" id="module-service">
+            <!-- 统计 -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value">28</div><div class="stat-label">服务商家</div></div>
+                <div class="stat-item"><div class="stat-value">512</div><div class="stat-label">本月订单</div></div>
+                <div class="stat-item"><div class="stat-value">4.8</div><div class="stat-label">平均评分</div></div>
+            </div>
+
+            <!-- ========== 红色便民仓 ========== -->
+            <div class="warehouse-card">
+                <div class="warehouse-header">
+                    <div style="font-size:16px;">🏠</div>
+                    <div class="warehouse-title">红色便民仓</div>
+                    <div class="warehouse-tag">党支部审核</div>
+                </div>
+                <div class="warehouse-desc">整合辖区信誉良好的服务商，党支部审核准入、明码标价，一键预约上门服务</div>
+                <!-- 分类导航 -->
+                <div class="warehouse-providers">
+                    <div class="provider-chip" onclick="openWarehouseTab('all')"><div class="provider-chip-icon">🏪</div><div class="provider-chip-name">全部商家</div></div>
+                    <div class="provider-chip" onclick="openWarehouseTab('lock')"><div class="provider-chip-icon">🔓</div><div class="provider-chip-name">开锁</div></div>
+                    <div class="provider-chip" onclick="openWarehouseTab('repair')"><div class="provider-chip-icon">🔧</div><div class="provider-chip-name">维修</div></div>
+                    <div class="provider-chip" onclick="openWarehouseTab('clean')"><div class="provider-chip-icon">🧹</div><div class="provider-chip-name">家政</div></div>
+                </div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openProviderDetail('lock')">
+                    <div class="quick-icon bg-orange">🔓</div>
+                    <div><div class="quick-text">开锁服务</div><div class="quick-desc">24小时 · ¥50起</div></div>
+                </div>
+                <div class="quick-item" onclick="openProviderDetail('repair')">
+                    <div class="quick-icon bg-blue">🔧</div>
+                    <div><div class="quick-text">水电维修</div><div class="quick-desc">快速上门 · ¥80起</div></div>
+                </div>
+                <div class="quick-item" onclick="openProviderDetail('clean')">
+                    <div class="quick-icon bg-green">🧹</div>
+                    <div><div class="quick-text">家政保洁</div><div class="quick-desc">专业服务 · ¥60起</div></div>
+                </div>
+            </div>
+
+            <!-- 服务商列表 -->
+            <div class="card">
+                <div class="card-title">全部服务商 <span class="card-more" onclick="openModal('warehouseModal')">全部 ›</span></div>
+                <div class="person-card" onclick="openProviderDetail('lock')">
+                    <div class="person-avatar bg-orange">🔓</div>
+                    <div class="person-info">
+                        <div class="person-name">开锁王 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div>
+                        <div class="person-desc">⭐4.9 · 已服务328次 · 距您500m</div>
+                    </div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥50起</div></div>
+                </div>
+                <div class="person-card" onclick="openProviderDetail('repair')">
+                    <div class="person-avatar bg-blue">🔧</div>
+                    <div class="person-info">
+                        <div class="person-name">水电维修专业服务 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div>
+                        <div class="person-desc">⭐4.8 · 已服务156次 · 距您800m</div>
+                    </div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥80起</div></div>
+                </div>
+                <div class="person-card" onclick="openProviderDetail('clean')">
+                    <div class="person-avatar bg-green">🧹</div>
+                    <div class="person-info">
+                        <div class="person-name">家政公司 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div>
+                        <div class="person-desc">⭐4.7 · 已服务512次 · 距您600m</div>
+                    </div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥60起</div></div>
+                </div>
+            </div>
+
+            <!-- ========== 政务自助站 ========== -->
+            <div class="gov-station-card">
+                <div class="gov-station-header">
+                    <div style="font-size:16px;">🏛️</div>
+                    <div class="gov-station-title">政务自助站</div>
+                    <div class="gov-station-tag">指尖预约</div>
+                </div>
+                <div class="gov-station-desc">对接区行政审批局，链接社保、医保、公积金等高频事项，指尖预约、就近办理</div>
+                <div class="gov-service-grid">
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">🏥</div>
+                        <div class="gov-service-name">社保查询<span class="gov-service-new">热</span></div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">💊</div>
+                        <div class="gov-service-name">医保账户<span class="gov-service-new">热</span></div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">🏢</div>
+                        <div class="gov-service-name">公积金<span class="gov-service-new">新</span></div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">📄</div>
+                        <div class="gov-service-name">证明开具</div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">👤</div>
+                        <div class="gov-service-name">户籍办理</div>
+                    </div>
+                    <div class="gov-service-item" onclick="openModal('govStationModal')">
+                        <div class="gov-service-icon">🚗</div>
+                        <div class="gov-service-name">车管业务</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 邻里圈（互动在线） ==================== -->
+        <div class="module-section" id="module-community">
+            <!-- ========== 红色议事厅 ========== -->
+            <div class="council-card">
+                <div class="council-header">
+                    <div style="font-size:16px;">🎗️</div>
+                    <div class="council-title">红色议事厅</div>
+                    <div class="council-tag">党支部发起</div>
+                </div>
+                <div class="council-desc">针对公共收益使用、加装电梯等事项，由党支部线上发起投票、公示结果，解决上班族参与难问题</div>
+
+                <!-- 议事厅投票项目 -->
+                <div class="council-vote-item" onclick="openModal('councilVoteModal')">
+                    <div class="council-vote-header">
+                        <div class="council-vote-badge">投票中</div>
+                        <div style="font-size:13px;font-weight:600;flex:1;">小区公共收益使用方案</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 已有23人参与 · 截止04-25</div>
+                    <div class="council-vote-progress"><div class="council-vote-fill" style="width:58%;"></div></div>
+                    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:4px;">
+                        <span>方案A: 52%</span><span>方案B: 30%</span><span>方案C: 18%</span>
+                    </div>
+                </div>
+
+                <div class="council-vote-item" onclick="openModal('councilVoteModal')">
+                    <div class="council-vote-header">
+                        <div class="council-vote-badge">公示中</div>
+                        <div style="font-size:13px;font-weight:600;flex:1;">3号楼加装电梯方案</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 结果已公示</div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+                        <span style="font-size:11px;color:var(--success);background:#E8F5E9;padding:2px 8px;border-radius:8px;">✓ 已通过</span>
+                        <span style="font-size:11px;color:var(--text-tertiary);">同意率 78%</span>
+                    </div>
+                </div>
+
+                <div class="council-vote-item" onclick="openModal('councilVoteModal')">
+                    <div class="council-vote-header">
+                        <div class="council-vote-badge">征集意见</div>
+                        <div style="font-size:13px;font-weight:600;flex:1;">端午节活动安排</div>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 征集截止04-20</div>
+                </div>
+
+                <div class="council-actions">
+                    <button class="council-btn council-btn-primary" onclick="openModal('councilVoteModal')">参与投票</button>
+                    <button class="council-btn council-btn-outline" onclick="openModal('historyVoteModal')">往期结果</button>
+                </div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openModal('postModal')">
+                    <div class="quick-icon bg-blue">📝</div>
+                    <div><div class="quick-text">发布动态</div><div class="quick-desc">分享生活</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('互助Modal')">
+                    <div class="quick-icon bg-green">🤝</div>
+                    <div><div class="quick-text">邻里互助</div><div class="quick-desc">互帮互助</div></div>
+                </div>
+            </div>
+
+            <!-- 帖子 -->
+            <div class="card" style="padding:0;">
+                <div style="padding:14px 14px 0;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);">邻里动态</div>
+                <div class="post-card" style="box-shadow:none;border-radius:0;margin-bottom:0;">
+                    <div class="post-header">
+                        <div class="post-avatar">张</div>
+                        <div class="post-user">张先生</div>
+                        <div class="post-time">10分钟前</div>
+                    </div>
+                    <div class="post-content">大家好，谁家有闲置的折叠桌？借我用一下，周末家里来客人。谢谢！</div>
+                    <div class="post-footer">
+                        <div class="post-action">❤️ 5</div>
+                        <div class="post-action">💬 3</div>
+                        <div class="post-action" style="margin-left:auto;">🔄 转发</div>
+                    </div>
+                </div>
+                <div class="post-card" style="box-shadow:none;border-radius:0;margin-bottom:0;">
+                    <div class="post-header">
+                        <div class="post-avatar">李</div>
+                        <div class="post-user">李阿姨</div>
+                        <div class="post-time">30分钟前</div>
+                    </div>
+                    <div class="post-content">小区门口的菜鸟驿站今天开始试营业了，以后取快递方便多了！</div>
+                    <div class="post-images"><div class="post-image"></div><div class="post-image"></div></div>
+                    <div class="post-footer">
+                        <div class="post-action">❤️ 12</div>
+                        <div class="post-action">💬 8</div>
+                        <div class="post-action" style="margin-left:auto;">🔄 转发</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 评实效（评价在线） ==================== -->
+        <div class="module-section" id="module-rating">
+            <!-- 统计 -->
+            <div class="stats-row">
+                <div class="stat-item"><div class="stat-value">1,280</div><div class="stat-label">我的积分</div></div>
+                <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">我的评价</div></div>
+                <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">荣誉</div></div>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="quick-row">
+                <div class="quick-item" onclick="openModal('pointsModal')">
+                    <div class="quick-icon bg-yellow">🎁</div>
+                    <div><div class="quick-text">积分商城</div><div class="quick-desc">兑换好礼</div></div>
+                </div>
+                <div class="quick-item">
+                    <div class="quick-icon bg-green">🏆</div>
+                    <div><div class="quick-text">积分排名</div><div class="quick-desc">我的排名: #28</div></div>
+                </div>
+                <div class="quick-item" onclick="openModal('honorModal')">
+                    <div class="quick-icon bg-red">🏅</div>
+                    <div><div class="quick-text">我的荣誉</div><div class="quick-desc">查看证书</div></div>
+                </div>
+            </div>
+
+            <!-- 最新评价 -->
+            <div class="card">
+                <div class="card-title">我的服务评价 <span class="card-more">全部 ›</span></div>
+                <div class="list-card" style="box-shadow:none;border-radius:0;">
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-blue">🔧</div>
+                        <div class="list-content">
+                            <div class="list-content-title">对物业李师傅</div>
+                            <div class="list-content-desc"><span class="stars">★★★★★</span> 服务态度很好，很快修好了楼道灯</div>
+                        </div>
+                        <span style="font-size:10px;color:var(--text-tertiary);">04-17</span>
+                    </div>
+                    <div class="list-item" style="padding:12px 0;">
+                        <div class="list-icon bg-orange">🔓</div>
+                        <div class="list-content">
+                            <div class="list-content-title">对开锁王</div>
+                            <div class="list-content-desc"><span class="stars">★★★★★</span> 师傅很专业，开锁很快，收费合理</div>
+                        </div>
+                        <span style="font-size:10px;color:var(--text-tertiary);">04-15</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 积分规则 -->
+            <div class="card">
+                <div class="card-title">积分规则</div>
+                <div class="list-card" style="box-shadow:none;border-radius:0;">
+                    <div class="list-item" style="padding:10px 0;">
+                        <div style="font-size:14px;margin-right:8px;">+5</div>
+                        <div class="list-content"><div class="list-content-title">上报诉求</div><div class="list-content-desc">+5分/次</div></div>
+                    </div>
+                    <div class="list-item" style="padding:10px 0;">
+                        <div style="font-size:14px;margin-right:8px;">+2</div>
+                        <div class="list-content"><div class="list-content-title">参与投票</div><div class="list-content-desc">+2分/次</div></div>
+                    </div>
+                    <div class="list-item" style="padding:10px 0;">
+                        <div style="font-size:14px;margin-right:8px;">+10</div>
+                        <div class="list-content"><div class="list-content-title">邻里互助</div><div class="list-content-desc">+10分/次</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 个人中心 ==================== -->
+        <div class="module-section" id="module-profile">
+            <div style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));padding:32px 16px 24px;color:white;text-align:center;">
+                <div style="width:72px;height:72px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="72" height="72">
+                      <defs>
+                        <linearGradient id="plr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C62828"/><stop offset="50%" stop-color="#B71C1C"/><stop offset="100%" stop-color="#7F0000"/></linearGradient>
+                        <linearGradient id="plg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE57F"/><stop offset="50%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient>
+                      </defs>
+                      <circle cx="100" cy="100" r="100" fill="url(#plr)"/>
+                      <g transform="translate(100,45)"><polygon points="0,-24 6,-9 21,-9 9,2 14,17 0,9 -14,17 -9,2 -21,-9 -6,-9" fill="url(#plg)"/></g>
+                      <path d="M100,150 C85,126 64,108 64,86 C64,66 82,51 100,71 C118,51 136,66 136,86 C136,108 115,126 100,150 Z" fill="white"/>
+                      <g transform="translate(100,102)"><circle cx="0" cy="0" r="9" fill="url(#plg)"/><circle cx="0" cy="0" r="5.5" fill="#B71C1C"/></g>
+                      <g transform="translate(100,102)"><g transform="translate(16,-16) rotate(-45)"><rect x="-4" y="-13" width="8" height="15" rx="4" fill="url(#plg)"/></g></g>
+                    </svg>
+                </div>
+                <div style="font-size:16px;font-weight:600;">张先生</div>
+                <div style="font-size:12px;opacity:0.9;margin-top:4px;">幸福小区 3号楼 2单元 501室</div>
+            </div>
+            <div style="margin-top:-20px;margin-bottom:14px;">
+                <div class="stats-row" style="padding:0 4px;">
+                    <div class="stat-item"><div class="stat-value">1,280</div><div class="stat-label">积分</div></div>
+                    <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">诉求</div></div>
+                    <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">荣誉</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="list-card" style="box-shadow:none;">
+                    <div class="list-item" onclick="openModal('appealModal')"><div class="list-icon bg-orange">📋</div><div class="list-content"><div class="list-content-title">我的诉求</div></div><div class="list-arrow">›</div></div>
+                    <div class="list-item"><div class="list-icon bg-green">🎁</div><div class="list-content"><div class="list-content-title">积分商城</div></div><div class="list-arrow">›</div></div>
+                    <div class="list-item"><div class="list-icon bg-purple">🏅</div><div class="list-content"><div class="list-content-title">我的荣誉</div></div><div class="list-arrow">›</div></div>
+                    <div class="list-item"><div class="list-icon bg-blue">🏠</div><div class="list-content"><div class="list-content-title">房屋绑定</div></div><div class="list-arrow">›</div></div>
+                    <div class="list-item"><div class="list-icon bg-yellow">🔔</div><div class="list-content"><div class="list-content-title">消息设置</div></div><div class="list-arrow">›</div></div>
+                    <div class="list-item"><div class="list-icon" style="background:var(--bg-tertiary);">⚙️</div><div class="list-content"><div class="list-content-title">系统设置</div></div><div class="list-arrow">›</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航 -->
+    
+<div class="tabbar">
+        <div class="tabbar-item active" onclick="switchTab('home')"><div class="tabbar-icon">🏠</div><div class="tabbar-label">首页</div></div>
+        <div class="tabbar-item" onclick="switchTab('message')"><div class="tabbar-icon">💬</div><div class="tabbar-label">消息</div></div>
+        <div class="tabbar-item" onclick="switchTab('publish')"><div class="tabbar-icon">➕</div><div class="tabbar-label">发布</div></div>
+        <div class="tabbar-item" onclick="switchTab('service')"><div class="tabbar-icon">📅</div><div class="tabbar-label">服务</div></div>
+        <div class="tabbar-item" onclick="switchTab('profile')"><div class="tabbar-icon">👤</div><div class="tabbar-label">我的</div></div>
+    </div>
+
+    <!-- ========== 弹窗 ========== -->
+
+    <!-- 角色切换 -->
+    <div class="modal" id="roleModal">
+        <div class="modal-content">
+            <div class="modal-header">切换身份<span class="modal-close" onclick="closeModal('roleModal')">×</span></div>
+            <div class="modal-body">
+                <div class="list-item" style="padding:12px 0;cursor:pointer;" onclick="selectRole('居民','🏠')"><div class="list-icon bg-blue">🏠</div><div class="list-content"><div class="list-content-title">居民</div><div class="list-content-desc">普通住户，可上报诉求、预约服务</div></div></div>
+                <div class="list-item" style="padding:12px 0;cursor:pointer;" onclick="selectRole('党员','🎗️')"><div class="list-icon bg-red">🎗️</div><div class="list-content"><div class="list-content-title">党员</div><div class="list-content-desc">党员志愿者，可认领微心愿、参与服务</div></div></div>
+                <div class="list-item" style="padding:12px 0;cursor:pointer;" onclick="selectRole('网格员','👮')"><div class="list-icon bg-green">👮</div><div class="list-content"><div class="list-content-title">网格员</div><div class="list-content-desc">社区网格员，负责诉求派单处理</div></div></div>
+                <div class="list-item" style="padding:12px 0;cursor:pointer;" onclick="selectRole('物业','🔧')"><div class="list-icon bg-orange">🔧</div><div class="list-content"><div class="list-content-title">物业</div><div class="list-content-desc">物业工作人员，处理报修工单</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交诉求 -->
+    <div class="modal" id="appealModal">
+        <div class="modal-content">
+            <div class="modal-header">我要报诉求<span class="modal-close" onclick="closeModal('appealModal')">×</span></div>
+            <div class="modal-body">
+                <div class="form-group"><div class="form-label">诉求类型</div>
+                    <div class="type-grid">
+                        <div class="type-item selected" onclick="selectType(this)"><div class="type-item-icon">🏠</div><div class="type-item-label">物业</div></div>
+                        <div class="type-item" onclick="selectType(this)"><div class="type-item-icon">🚔</div><div class="type-item-label">治安</div></div>
+                        <div class="type-item" onclick="selectType(this)"><div class="type-item-icon">🌳</div><div class="type-item-label">环境</div></div>
+                        <div class="type-item" onclick="selectType(this)"><div class="type-item-icon">🔧</div><div class="type-item-label">设施</div></div>
+                    </div>
+                </div>
+                <div class="form-group"><div class="form-label">诉求内容</div><textarea class="form-textarea" id="appealContent" placeholder="请详细描述您的问题..."></textarea></div>
+                <div class="form-group"><div class="form-label">位置</div><div style="padding:10px;background:var(--bg-tertiary);border-radius:6px;font-size:12px;">📍 幸福小区3号楼2单元</div></div>
+                <div class="form-group"><div class="form-label">是否匿名</div><div style="display:flex;gap:16px;font-size:13px;"><label><input type="radio" name="anon" checked> 否</label><label><input type="radio" name="anon"> 是</label></div></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('appealModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="submitAppeal()">提交诉求</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预约服务 -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">预约服务<span class="modal-close" onclick="closeModal('serviceModal')">×</span></div>
+            <div class="modal-body">
+                <div class="form-group"><div class="form-label">服务商</div><div style="padding:10px;background:var(--bg-tertiary);border-radius:6px;font-size:13px;font-weight:600;">开锁王 - 24小时开锁</div></div>
+                <div class="form-group"><div class="form-label">服务类型</div><select class="form-select"><option>开锁</option><option>换锁</option><option>开保险柜</option></select></div>
+                <div class="form-group"><div class="form-label">预约时间</div><input type="datetime-local" class="form-input"></div>
+                <div class="form-group"><div class="form-label">联系电话</div><input type="tel" class="form-input" value="138****1234"></div>
+                <div class="form-group"><div class="form-label">备注</div><textarea class="form-textarea" placeholder="请补充说明..."></textarea></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('serviceModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="bookService()">立即预约</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 志愿服务 -->
+    <div class="modal" id="volunteerModal">
+        <div class="modal-content">
+            <div class="modal-header">志愿服务<span class="modal-close" onclick="closeModal('volunteerModal')">×</span></div>
+            <div class="modal-body">
+                <div class="list-card" style="box-shadow:none;">
+                    <div class="list-item"><div class="list-icon bg-green">🙋</div><div class="list-content"><div class="list-content-title">社区环境整治志愿活动</div><div class="list-content-desc">04-20 09:00 | 奖励10分/小时 | 招募中</div></div></div>
+                    <div class="list-item"><div class="list-icon bg-blue">🤝</div><div class="list-content"><div class="list-content-title">帮办代办 - 老人代购</div><div class="list-content-desc">04-19 15:00 | 奖励15分/次 | 待接单</div></div></div>
+                    <div class="list-item"><div class="list-icon bg-purple">🏥</div><div class="list-content"><div class="list-content-title">关爱老人志愿活动</div><div class="list-content-desc">04-22 14:00 | 奖励10分/小时 | 招募中</div></div></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="modal-btn modal-btn-cancel" onclick="closeModal('volunteerModal')">关闭</button></div>
+        </div>
+    </div>
+
+    <!-- 微心愿 -->
+    <div class="modal" id="wishModal">
+        <div class="modal-content">
+            <div class="modal-header">微心愿<span class="modal-close" onclick="closeModal('wishModal')">×</span></div>
+            <div class="modal-body">
+                <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:10px;">特殊群体的微心愿，等待党员志愿者认领帮助</div>
+                <div class="list-card" style="box-shadow:none;">
+                    <div class="list-item"><div class="list-icon bg-purple">⭐</div><div class="list-content"><div class="list-content-title">独居老人李奶奶想要一台血压仪</div><div class="list-content-desc">认领奖励20分 | 有效期至04-30</div></div><button style="padding:4px 10px;background:var(--primary);color:white;border:none;border-radius:12px;font-size:11px;">认领</button></div>
+                    <div class="list-item"><div class="list-icon bg-purple">⭐</div><div class="list-content"><div class="list-content-title">王爷爷需要帮忙代购生活用品</div><div class="list-content-desc">认领奖励10分 | 有效期至04-25</div></div><button style="padding:4px 10px;background:var(--primary);color:white;border:none;border-radius:12px;font-size:11px;">认领</button></div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:8px;" onclick="closeModal('wishModal');showToast('心愿发布成功')">发布我的心愿</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投票 -->
+    <div class="modal" id="voteModal">
+        <div class="modal-content">
+            <div class="modal-header">小区公共收益使用方案投票<span class="modal-close" onclick="closeModal('voteModal')">×</span></div>
+            <div class="modal-body">
+                <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:10px;">请选择您同意的方案（已有23人参与）</div>
+                <div style="margin-bottom:8px;"><label style="display:flex;align-items:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;"><input type="radio" name="vote" style="margin-right:8px;"> 方案A：用于小区公共设施改造（健身器材、监控升级）</label></div>
+                <div style="margin-bottom:8px;"><label style="display:flex;align-items:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;"><input type="radio" name="vote" style="margin-right:8px;"> 方案B：用于节日活动和邻里聚餐</label></div>
+                <div><label style="display:flex;align-items:center;padding:10px;background:var(--bg-tertiary);border-radius:8px;cursor:pointer;"><input type="radio" name="vote" style="margin-right:8px;"> 方案C：用于儿童游乐区改造</label></div>
+                <div style="font-size:11px;color:var(--text-tertiary);margin-top:10px;">截止日期：2025-04-25</div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('voteModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="submitVote()">提交投票</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 书记信箱 -->
+    <div class="modal" id="letterModal">
+        <div class="modal-content">
+            <div class="modal-header">书记信箱<span class="modal-close" onclick="closeModal('letterModal')">×</span></div>
+            <div class="modal-body">
+                <div style="text-align:center;padding:16px 0;"><div style="font-size:32px;margin-bottom:8px;">📮</div><div style="font-size:13px;color:var(--text-secondary);">您的意见将直接送达<br>社区党委书记</div></div>
+                <div class="form-group"><div class="form-label">标题</div><input type="text" class="form-input" placeholder="请输入标题"></div>
+                <div class="form-group"><div class="form-label">内容</div><textarea class="form-textarea" placeholder="请详细描述您的建议或问题..."></textarea></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('letterModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="closeModal('letterModal');showToast('发送成功')">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发布动态 -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">发布动态<span class="modal-close" onclick="closeModal('postModal')">×</span></div>
+            <div class="modal-body">
+                <textarea class="form-textarea" placeholder="分享您的想法..." style="min-height:120px;margin-bottom:10px;"></textarea>
+                <div style="display:flex;gap:8px;">
+                    <div style="width:60px;height:60px;border:1px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text-tertiary);cursor:pointer;">📷</div>
+                    <div style="width:60px;height:60px;border-radius:8px;background:var(--bg-tertiary);"></div>
+                    <div style="width:60px;height:60px;border-radius:8px;background:var(--bg-tertiary);"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('postModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="closeModal('postModal');showToast('发布成功')">发布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 积分商城 -->
+    <div class="modal" id="pointsModal">
+        <div class="modal-content">
+            <div class="modal-header">积分商城<span class="modal-close" onclick="closeModal('pointsModal')">×</span></div>
+            <div class="modal-body">
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+                    <div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🎁</div><div style="font-size:12px;font-weight:600;">精美礼品</div><div style="font-size:11px;color:var(--text-tertiary);">200积分</div><button style="margin-top:6px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:10px;font-size:11px;">兑换</button></div>
+                    <div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:4px;">☕</div><div style="font-size:12px;font-weight:600;">咖啡券</div><div style="font-size:11px;color:var(--text-tertiary);">100积分</div><button style="margin-top:6px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:10px;font-size:11px;">兑换</button></div>
+                    <div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🧴</div><div style="font-size:12px;font-weight:600;">洗车券</div><div style="font-size:11px;color:var(--text-tertiary);">300积分</div><button style="margin-top:6px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:10px;font-size:11px;">兑换</button></div>
+                    <div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🎫</div><div style="font-size:12px;font-weight:600;">电影票</div><div style="font-size:11px;color:var(--text-tertiary);">500积分</div><button style="margin-top:6px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:10px;font-size:11px;">兑换</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 红色便民仓 - 服务商详情 ========== -->
+    <div class="modal" id="providerDetailModal">
+        <div class="modal-content">
+            <div class="modal-header"><span id="providerDetailTitle">服务商详情</span><span class="modal-close" onclick="closeModal('providerDetailModal')">×</span></div>
+            <div class="modal-body">
+                <div class="provider-detail-header">
+                    <div class="provider-detail-avatar bg-orange" id="providerDetailAvatar">🔓</div>
+                    <div>
+                        <div class="provider-detail-name" id="providerDetailName">开锁王</div>
+                        <div class="provider-detail-meta" id="providerDetailMeta">⭐4.9 · 已服务328次</div>
+                        <div class="provider-detail-verified">✓ 党支部认证</div>
+                    </div>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:6px;">明码标价</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                        <div style="padding:10px;background:var(--bg-tertiary);border-radius:8px;">
+                            <div style="font-size:11px;color:var(--text-tertiary);">普通开锁</div>
+                            <div style="font-size:15px;font-weight:700;color:var(--primary);">¥50</div>
+                        </div>
+                        <div style="padding:10px;background:var(--bg-tertiary);border-radius:8px;">
+                            <div style="font-size:11px;color:var(--text-tertiary);">C级锁</div>
+                            <div style="font-size:15px;font-weight:700;color:var(--primary);">¥80</div>
+                        </div>
+                        <div style="padding:10px;background:var(--bg-tertiary);border-radius:8px;">
+                            <div style="font-size:11px;color:var(--text-tertiary);">B级锁</div>
+                            <div style="font-size:15px;font-weight:700;color:var(--primary);">¥150</div>
+                        </div>
+                        <div style="padding:10px;background:var(--bg-tertiary);border-radius:8px;">
+                            <div style="font-size:11px;color:var(--text-tertiary);">开保险柜</div>
+                            <div style="font-size:15px;font-weight:700;color:var(--primary);">¥200</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+                    <div style="margin-bottom:6px;">📍 距您约500m · 忻府区幸福路12号</div>
+                    <div>⏱️ 响应时间：接单后15分钟内上门</div>
+                </div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;padding:10px;background:var(--bg-tertiary);border-radius:8px;">
+                    <div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">🏛️ 党支部审核记录</div>
+                    <div>• 营业执照：已审核 ✓</div>
+                    <div>• 服务资质：已审核 ✓</div>
+                    <div>• 用户评价：平均4.9分 ✓</div>
+                    <div>• 准入时间：2024-01-15</div>
+                </div>
+                <div class="form-group"><div class="form-label">选择服务类型</div>
+                    <select class="form-select" id="providerServiceType">
+                        <option>普通开锁 - ¥50</option>
+                        <option>C级锁 - ¥80</option>
+                        <option>B级锁 - ¥150</option>
+                        <option>开保险柜 - ¥200</option>
+                    </select>
+                </div>
+                <div class="form-group"><div class="form-label">预约时间</div><input type="datetime-local" class="form-input" id="providerBookTime"></div>
+                <div class="form-group"><div class="form-label">联系电话</div><input type="tel" class="form-input" value="138****1234"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('providerDetailModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="bookProvider()">立即预约</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 红色便民仓 - 全部服务商 ========== -->
+    <div class="modal" id="warehouseModal">
+        <div class="modal-content">
+            <div class="modal-header">红色便民仓<span class="modal-close" onclick="closeModal('warehouseModal')">×</span></div>
+            <div class="modal-body" style="padding:8px 16px 16px;">
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:8px;">分类筛选</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                        <div style="padding:5px 12px;background:var(--primary);color:white;border-radius:14px;font-size:11px;cursor:pointer;">全部</div>
+                        <div style="padding:5px 12px;background:var(--bg-tertiary);color:var(--text-secondary);border-radius:14px;font-size:11px;cursor:pointer;">🔓 开锁</div>
+                        <div style="padding:5px 12px;background:var(--bg-tertiary);color:var(--text-secondary);border-radius:14px;font-size:11px;cursor:pointer;">🔧 维修</div>
+                        <div style="padding:5px 12px;background:var(--bg-tertiary);color:var(--text-secondary);border-radius:14px;font-size:11px;cursor:pointer;">🧹 家政</div>
+                        <div style="padding:5px 12px;background:var(--bg-tertiary);color:var(--text-secondary);border-radius:14px;font-size:11px;cursor:pointer;">🚗 搬家</div>
+                    </div>
+                </div>
+                <div class="person-card" onclick="closeModal('warehouseModal');openProviderDetail('lock')">
+                    <div class="person-avatar bg-orange">🔓</div>
+                    <div class="person-info"><div class="person-name">开锁王 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div><div class="person-desc">⭐4.9 · 已服务328次 · 24小时</div></div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥50起</div></div>
+                </div>
+                <div class="person-card" onclick="closeModal('warehouseModal');openProviderDetail('repair')">
+                    <div class="person-avatar bg-blue">🔧</div>
+                    <div class="person-info"><div class="person-name">水电维修专业服务 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div><div class="person-desc">⭐4.8 · 已服务156次</div></div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥80起</div></div>
+                </div>
+                <div class="person-card" onclick="closeModal('warehouseModal');openProviderDetail('clean')">
+                    <div class="person-avatar bg-green">🧹</div>
+                    <div class="person-info"><div class="person-name">家政公司 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div><div class="person-desc">⭐4.7 · 已服务512次</div></div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥60起</div></div>
+                </div>
+                <div class="person-card">
+                    <div class="person-avatar bg-orange">🚗</div>
+                    <div class="person-info"><div class="person-name">幸福搬家服务 <span style="font-size:10px;color:var(--success);">✓ 已认证</span></div><div class="person-desc">⭐4.6 · 已服务89次</div></div>
+                    <div class="person-score"><div class="person-score-num" style="color:var(--primary);">¥150起</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 政务自助站 ========== -->
+    <div class="modal" id="govStationModal">
+        <div class="modal-content">
+            <div class="modal-header">政务自助站<span class="modal-close" onclick="closeModal('govStationModal')">×</span></div>
+            <div class="modal-body" style="padding:8px 16px 16px;">
+                <div style="background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:10px;padding:12px;margin-bottom:14px;">
+                    <div style="font-size:13px;font-weight:600;color:var(--info);margin-bottom:4px;">🏛️ 区行政审批局 · 一点办政务直通车</div>
+                    <div style="font-size:11px;color:var(--text-secondary);">对接区行政审批局，高频事项指尖预约、就近办理</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+                    <div style="padding:14px;background:var(--bg-tertiary);border-radius:10px;text-align:center;cursor:pointer;" onclick="bookGovService('社保查询')">
+                        <div style="font-size:24px;margin-bottom:4px;">🏥</div>
+                        <div style="font-size:12px;font-weight:600;">社保查询</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">指尖预约</div>
+                    </div>
+                    <div style="padding:14px;background:var(--bg-tertiary);border-radius:10px;text-align:center;cursor:pointer;" onclick="bookGovService('医保账户')">
+                        <div style="font-size:24px;margin-bottom:4px;">💊</div>
+                        <div style="font-size:12px;font-weight:600;">医保账户</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">指尖预约</div>
+                    </div>
+                    <div style="padding:14px;background:var(--bg-tertiary);border-radius:10px;text-align:center;cursor:pointer;" onclick="bookGovService('公积金')">
+                        <div style="font-size:24px;margin-bottom:4px;">🏢</div>
+                        <div style="font-size:12px;font-weight:600;">公积金</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">指尖预约</div>
+                    </div>
+                    <div style="padding:14px;background:var(--bg-tertiary);border-radius:10px;text-align:center;cursor:pointer;" onclick="bookGovService('证明开具')">
+                        <div style="font-size:24px;margin-bottom:4px;">📄</div>
+                        <div style="font-size:12px;font-weight:600;">证明开具</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">指尖预约</div>
+                    </div>
+                    <div style="padding:14px;background:var(--bg-tertiary);border-radius:10px;text-align:center;cursor:pointer;" onclick="bookGovService('户籍办理')">
+                        <div style="font-size:24px;margin-bottom:4px;">👤</div>
+                        <div style="font-size:12px;font-weight:600;">户籍办理</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">指尖预约</div>
+                    </div>
+                    <div style="padding:14px;background:var(--bg-tertiary);border-radius:10px;text-align:center;cursor:pointer;" onclick="bookGovService('车管业务')">
+                        <div style="font-size:24px;margin-bottom:4px;">🚗</div>
+                        <div style="font-size:12px;font-weight:600;">车管业务</div>
+                        <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">指尖预约</div>
+                    </div>
+                </div>
+                <div style="padding:12px;background:#FFF8E1;border:1px solid #FFE082;border-radius:8px;margin-bottom:10px;">
+                    <div style="font-size:12px;font-weight:600;color:#E65100;margin-bottom:6px;">📍 就近办理网点</div>
+                    <div style="font-size:11px;color:var(--text-secondary);line-height:1.8;">
+                        <div>• 忻府区政务服务中心（距您1.2km）</div>
+                        <div>• 长征街街道便民服务站（距您500m）</div>
+                        <div>• 幸福小区党群服务中心（距您200m）✓ 推荐</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="closeModal('govStationModal');showToast('预约成功！')">预约取号</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 红色议事厅 - 投票详情 ========== -->
+    <div class="modal" id="councilVoteModal">
+        <div class="modal-content">
+            <div class="modal-header">红色议事厅 · 投票<span class="modal-close" onclick="closeModal('councilVoteModal')">×</span></div>
+            <div class="modal-body">
+                <div style="padding:10px;background:var(--bg-tertiary);border-radius:8px;margin-bottom:14px;">
+                    <div style="font-size:14px;font-weight:700;margin-bottom:4px;">小区公共收益使用方案</div>
+                    <div style="font-size:11px;color:var(--text-secondary);">🎗️ 幸福小区党支部发起 · 已有23人参与 · 截止04-25</div>
+                </div>
+                <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:10px;">请选择您同意的方案：</div>
+                <div style="margin-bottom:10px;" onclick="selectVoteOption(this)">
+                    <div style="display:flex;align-items:center;padding:12px;background:var(--bg-tertiary);border-radius:8px;border:2px solid transparent;cursor:pointer;">
+                        <div class="vote-radio" style="width:18px;height:18px;border-radius:50%;border:2px solid var(--border);margin-right:10px;flex-shrink:0;"></div>
+                        <div><div style="font-size:13px;font-weight:600;">方案A：用于小区公共设施改造</div><div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">健身器材更新、监控升级，预计受益居民200+户</div></div>
+                    </div>
+                </div>
+                <div style="margin-bottom:10px;" onclick="selectVoteOption(this)">
+                    <div style="display:flex;align-items:center;padding:12px;background:var(--bg-tertiary);border-radius:8px;border:2px solid transparent;cursor:pointer;">
+                        <div class="vote-radio" style="width:18px;height:18px;border-radius:50%;border:2px solid var(--border);margin-right:10px;flex-shrink:0;"></div>
+                        <div><div style="font-size:13px;font-weight:600;">方案B：用于节日活动和邻里聚餐</div><div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">丰富邻里生活，增强社区凝聚力</div></div>
+                    </div>
+                </div>
+                <div style="margin-bottom:14px;" onclick="selectVoteOption(this)">
+                    <div style="display:flex;align-items:center;padding:12px;background:var(--bg-tertiary);border-radius:8px;border:2px solid transparent;cursor:pointer;">
+                        <div class="vote-radio" style="width:18px;height:18px;border-radius:50%;border:2px solid var(--border);margin-right:10px;flex-shrink:0;"></div>
+                        <div><div style="font-size:13px;font-weight:600;">方案C：用于儿童游乐区改造</div><div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">更换老化设施，营造儿童友好社区</div></div>
+                    </div>
+                </div>
+                <div style="font-size:12px;color:var(--text-tertiary);padding:10px;background:#FFF8E1;border-radius:8px;">
+                    <div style="font-weight:600;color:#E65100;margin-bottom:4px;">📋 当前投票进度</div>
+                    <div>方案A: 52%（12票）| 方案B: 30%（7票）| 方案C: 18%（4票）</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('councilVoteModal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="submitCouncilVote()">确认投票 (+5积分)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 红色议事厅 - 往期结果 ========== -->
+    <div class="modal" id="historyVoteModal">
+        <div class="modal-content">
+            <div class="modal-header">往期议事结果<span class="modal-close" onclick="closeModal('historyVoteModal')">×</span></div>
+            <div class="modal-body" style="padding:8px 16px 16px;">
+                <div class="council-vote-item" style="border-color:#E8F5E9;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                        <span style="font-size:11px;color:var(--success);background:#E8F5E9;padding:2px 8px;border-radius:8px;">✓ 已通过</span>
+                        <span style="font-size:13px;font-weight:600;">3号楼加装电梯方案</span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 表决率 78% · 2024-03-15</div>
+                    <div style="margin-top:8px;padding:8px;background:#E8F5E9;border-radius:6px;font-size:11px;color:var(--success);">✓ 该方案已实施，目前电梯建设中</div>
+                </div>
+                <div class="council-vote-item" style="border-color:#E8F5E9;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                        <span style="font-size:11px;color:var(--success);background:#E8F5E9;padding:2px 8px;border-radius:8px;">✓ 已通过</span>
+                        <span style="font-size:13px;font-weight:600;">小区垃圾分类定时投放</span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 表决率 85% · 2024-01-20</div>
+                    <div style="margin-top:8px;padding:8px;background:#E8F5E9;border-radius:6px;font-size:11px;color:var(--success);">✓ 已实施，运行良好</div>
+                </div>
+                <div class="council-vote-item" style="border-color:#E8F5E9;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                        <span style="font-size:11px;color:var(--warning);background:#FFF3E0;padding:2px 8px;border-radius:8px;">✗ 未通过</span>
+                        <span style="font-size:13px;font-weight:600;">引进智能快递柜</span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 表决率 42% · 2023-12-10</div>
+                    <div style="margin-top:8px;padding:8px;background:#FFF3E0;border-radius:6px;font-size:11px;color:var(--warning);">✗ 反对率58%，多数居民担忧费用问题</div>
+                </div>
+                <div class="council-vote-item" style="border-color:#E8F5E9;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                        <span style="font-size:11px;color:var(--success);background:#E8F5E9;padding:2px 8px;border-radius:8px;">✓ 已通过</span>
+                        <span style="font-size:13px;font-weight:600;">春节期间停车优惠方案</span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-secondary);">幸福小区党支部 · 表决率 92% · 2025-01-05</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 邻里互助 ========== -->
+    <div class="modal" id="互助Modal">
+        <div class="modal-content">
+            <div class="modal-header">邻里互助<span class="modal-close" onclick="closeModal('互助Modal')">×</span></div>
+            <div class="modal-body">
+                <div class="form-group"><div class="form-label">互助类型</div>
+                    <select class="form-select">
+                        <option>🏠 物品借用</option>
+                        <option>🛒 代购服务</option>
+                        <option>👴 老人陪护</option>
+                        <option>📚 知识分享</option>
+                    </select>
+                </div>
+                <div class="form-group"><div class="form-label">标题</div><input type="text" class="form-input" placeholder="简单描述需要的帮助"></div>
+                <div class="form-group"><div class="form-label">详细描述</div><textarea class="form-textarea" placeholder="请详细说明需求..."></textarea></div>
+                <div class="form-group"><div class="form-label">截止时间</div><input type="datetime-local" class="form-input"></div>
+                <div style="font-size:11px;color:var(--text-tertiary);padding:10px;background:var(--bg-tertiary);border-radius:8px;margin-bottom:10px;">
+                    💡 发布互助可获得2-10积分奖励，邻里互助共建和谐社区
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal('互助Modal')">取消</button>
+                <button class="modal-btn modal-btn-confirm" onclick="closeModal('互助Modal');showToast('发布成功！+5积分')">发布互助</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息通知 -->
+    <div class="modal" id="noticeModal">
+        <div class="modal-content">
+            <div class="modal-header">消息通知<span class="modal-close" onclick="closeModal('noticeModal')">×</span></div>
+            <div class="modal-body">
+                <div class="list-card" style="box-shadow:none;">
+                    <div class="list-item"><div class="list-icon bg-orange">⚡</div><div class="list-content"><div class="list-content-title">您的诉求已派单</div><div class="list-content-desc">楼道灯不亮 - 物业李师傅已接单</div></div></div>
+                    <div class="list-item"><div class="list-icon bg-green">✅</div><div class="list-content"><div class="list-content-title">诉求已处理完成</div><div class="list-content-desc">水管维修 - 请确认评价</div></div></div>
+                    <div class="list-item"><div class="list-icon bg-purple">🗳️</div><div class="list-content"><div class="list-content-title">新投票开始</div><div class="list-content-desc">小区公共收益使用方案投票</div></div></div>
+                    <div class="list-item"><div class="list-icon bg-blue">🎁</div><div class="list-content"><div class="list-content-title">积分到账</div><div class="list-content-desc">+5积分 - 上报诉求奖励</div></div></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="modal-btn modal-btn-cancel" onclick="closeModal('noticeModal')">关闭</button></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function switchModule(moduleId) {
+            document.querySelectorAll('.five-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+            event.target.closest('.five-tab').classList.add('active');
+            document.getElementById('module-' + moduleId).classList.add('active');
+        }
+
+        function switchTab(tabId) {
+            // 底部导航高亮
+            document.querySelectorAll('.tabbar-item').forEach((item, i) => {
+                item.classList.remove('active');
+                if ((tabId === 'home' && i === 0) || (tabId === 'message' && i === 1) || (tabId === 'publish' && i === 2) || (tabId === 'service' && i === 3) || (tabId === 'profile' && i === 4)) item.classList.add('active');
+            });
+
+            // 隐藏所有模块
+            document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+            // 五大板块Tab默认隐藏
+            const fiveTabsWrap = document.querySelector('.five-tabs-wrap');
+            if (fiveTabsWrap) fiveTabsWrap.classList.add('hidden');
+
+            // 根据Tab显示对应内容
+            if (tabId === 'home') {
+                // 首页显示五大板块Tab
+                if (fiveTabsWrap) fiveTabsWrap.classList.remove('hidden');
+                // 默认激活第一个板块党群家
+                document.querySelectorAll('.five-tab').forEach(t => t.classList.remove('active'));
+                document.querySelector('.five-tab').classList.add('active');
+                document.getElementById('module-party').classList.add('active');
+            } else if (tabId === 'message') {
+                document.getElementById('page-message').classList.add('active');
+            } else if (tabId === 'publish') {
+                document.getElementById('page-publish').classList.add('active');
+            } else if (tabId === 'service') {
+                document.getElementById('module-service').classList.add('active');
+            } else if (tabId === 'community') {
+                document.getElementById('module-community').classList.add('active');
+            } else if (tabId === 'rating') {
+                document.getElementById('module-rating').classList.add('active');
+            } else if (tabId === 'profile') {
+                document.getElementById('module-profile').classList.add('active');
+            }
+        }
+
+        // 消息Tab切换
+        function switchMsgTab(tab, el) {
+            document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('msg-content-notice').style.display = 'none';
+            document.getElementById('msg-content-appeal').style.display = 'none';
+            document.getElementById('msg-content-system').style.display = 'none';
+            const target = document.getElementById('msg-content-' + tab);
+            if (target) target.style.display = 'block';
+        }
+
+        // 发布页点击后返回（用于底部发布按钮）
+        function closePublish() { /* 发布页点击项目后由各自modal处理 */ }
+
+        function selectRole(name, icon) { document.getElementById('roleName').textContent = name; document.getElementById('roleIcon').textContent = icon; closeModal('roleModal'); showToast('已切换为' + name); }
+        function selectType(el) { document.querySelectorAll('.type-item').forEach(i => i.classList.remove('selected')); el.classList.add('selected'); }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        // ========== 红色便民仓 ==========
+        const providers = {
+            lock: { name: '开锁王', icon: '🔓', rating: '4.9', orders: 328, bg: 'bg-orange' },
+            repair: { name: '水电维修专业服务', icon: '🔧', rating: '4.8', orders: 156, bg: 'bg-blue' },
+            clean: { name: '家政公司', icon: '🧹', rating: '4.7', orders: 512, bg: 'bg-green' }
+        };
+
+        function openProviderDetail(type) {
+            const p = providers[type];
+            document.getElementById('providerDetailName').textContent = p.name;
+            document.getElementById('providerDetailMeta').textContent = '⭐' + p.rating + ' · 已服务' + p.orders + '次';
+            document.getElementById('providerDetailAvatar').textContent = p.icon;
+            document.getElementById('providerDetailAvatar').className = 'provider-detail-avatar ' + p.bg;
+            document.getElementById('providerDetailTitle').textContent = p.name;
+            openModal('providerDetailModal');
+        }
+
+        function openWarehouseTab(type) {
+            showToast('切换至' + (type === 'all' ? '全部商家' : type === 'lock' ? '开锁' : type === 'repair' ? '维修' : '家政'));
+        }
+
+        function bookProvider() {
+            const name = document.getElementById('providerDetailName').textContent;
+            const service = document.getElementById('providerServiceType').value;
+            if (!name) { showToast('请选择服务'); return; }
+            showToast('预约成功！' + name + '将尽快联系您');
+            closeModal('providerDetailModal');
+        }
+
+        // ========== 政务自助站 ==========
+        function bookGovService(serviceName) {
+            showToast('已预约：' + serviceName + '，请选择就近办理网点');
+        }
+
+        // ========== 红色议事厅 ==========
+        function selectVoteOption(el) {
+            document.querySelectorAll('#councilVoteModal .vote-radio').forEach(r => {
+                r.style.borderColor = 'var(--border)';
+                r.style.background = 'white';
+            });
+            const radio = el.querySelector('.vote-radio');
+            radio.style.borderColor = 'var(--primary)';
+            radio.style.background = 'var(--primary)';
+        }
+
+        function submitCouncilVote() {
+            const checked = document.querySelector('#councilVoteModal .vote-radio[style*="rgb(178, 34, 34)"]') || document.querySelector('#councilVoteModal .vote-radio');
+            if (!checked || checked.style.borderColor === 'var(--border)') {
+                showToast('请先选择方案');
+                return;
+            }
+            showToast('投票成功！+5积分，党支部已记录您的意见');
+            closeModal('councilVoteModal');
+        }
+
+        // ========== 原有功能 ==========
+        function submitAppeal() {
+            const content = document.getElementById('appealContent').value;
+            if (!content.trim()) { showToast('请输入诉求内容'); return; }
+            showToast('提交成功！等待派单处理');
+            closeModal('appealModal');
+        }
+        function bookService() { showToast('预约成功！等待服务商确认'); closeModal('serviceModal'); }
+        function submitVote() { showToast('投票成功！+2积分'); closeModal('voteModal'); }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('active');
+            setTimeout(() => t.classList.remove('active'), 2200);
+        }
+
+        document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); }));
+    </script>
+</body>
+</html>

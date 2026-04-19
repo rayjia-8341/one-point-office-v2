@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一点办 · Logo设计方案 V3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans SC', sans-serif; background: #090909; color: white; }
+
+        header { text-align: center; padding: 70px 20px 50px; background: radial-gradient(ellipse at 50% 0%, #1a0000 0%, #090909 60%); }
+        header h1 { font-family: 'Noto Serif SC', serif; font-size: 48px; color: #D32F2F; letter-spacing: 6px; margin-bottom: 14px; }
+        header p { color: #777; font-size: 15px; line-height: 1.8; max-width: 640px; margin: 0 auto 24px; }
+        .brand-row { display: flex; gap: 0; justify-content: center; flex-wrap: wrap; }
+        .brand-pill { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; margin: 4px; }
+        .pill-red { background: #200; color: #FF8A80; border: 1px solid #400; }
+        .pill-gold { background: #201a00; color: #FFD700; border: 1px solid #4a3800; }
+        .pill-blue { background: #001428; color: #82B1FF; border: 1px solid #003060; }
+
+        .concept-row { display: flex; gap: 0; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+        .concept-item { padding: 16px 28px; text-align: center; border-right: 1px solid #222; min-width: 160px; }
+        .concept-item:last-child { border-right: none; }
+        .concept-key { font-size: 15px; font-weight: 700; color: #FFD700; margin-bottom: 6px; }
+        .concept-val { font-size: 12px; color: #888; }
+
+        section { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+        .section-title { font-size: 20px; color: #D32F2F; margin-bottom: 28px; padding-left: 14px; border-left: 4px solid #D32F2F; }
+        .section-title.gold { color: #FFD700; border-color: #FFD700; }
+
+        /* 方案展示 */
+        .scheme-row { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+        .scheme-card { flex: 1; min-width: 280px; max-width: 380px; border-radius: 20px; padding: 36px; text-align: center; }
+        .scheme-dark { background: #111; border: 1px solid #1a1a1a; }
+        .scheme-red { background: linear-gradient(135deg, #D32F2F, #7F0000); }
+        .scheme-white { background: white; }
+        .scheme-black { background: #000; }
+        .scheme-name { font-size: 14px; font-weight: 700; margin-top: 20px; }
+        .scheme-desc { font-size: 12px; margin-top: 6px; opacity: 0.7; }
+
+        /* 品牌内涵 */
+        .内涵-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .内涵-card { background: #111; border-radius: 14px; padding: 24px; border-top: 3px solid #D32F2F; }
+        .内涵-key { font-size: 16px; font-weight: 700; color: #D32F2F; margin-bottom: 8px; }
+        .内涵-desc { font-size: 13px; color: #aaa; line-height: 1.7; }
+        .内涵-match { font-size: 11px; color: #FFD700; margin-top: 10px; padding-top: 8px; border-top: 1px solid #222; }
+
+        /* 色彩 */
+        .color-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .color-item { text-align: center; }
+        .color-swatch { width: 80px; height: 80px; border-radius: 14px; margin-bottom: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+        .color-name { font-size: 12px; font-weight: 600; }
+        .color-hex { font-size: 11px; color: #555; }
+
+        /* 变体 */
+        .variant-row { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; padding: 20px 0; }
+        .variant { text-align: center; }
+        .variant svg { width: 110px; height: 110px; }
+        .variant-label { font-size: 12px; color: #888; margin-top: 10px; }
+
+        /* 底部 */
+        .footer { text-align: center; padding: 60px 20px; border-top: 1px solid #1a1a1a; margin-top: 60px; }
+        .footer p { color: #444; font-size: 13px; line-height: 2; }
+
+        @media (max-width: 768px) {
+            .内涵-grid { grid-template-columns: 1fr; }
+            .concept-item { min-width: 120px; padding: 12px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>一点办</h1>
+    <p>品牌Logo设计方案 V3<br>党徽 + 手指点击 + 心形 = 党群同心、一点即办</p>
+    <div class="brand-row">
+        <span class="brand-pill pill-red">🏛️ 党徽引领</span>
+        <span class="brand-pill pill-gold">👆 手指点击</span>
+        <span class="brand-pill pill-red">❤️ 心形纽带</span>
+        <span class="brand-pill pill-blue">📱 科技赋能</span>
+    </div>
+    <div class="concept-row">
+        <div class="concept-item">
+            <div class="concept-key">⭐ 一点即达</div>
+            <div class="concept-val">线上点击 · 诉求直达党支部</div>
+        </div>
+        <div class="concept-item">
+            <div class="concept-key">⭐ 一点即享</div>
+            <div class="concept-val">线下点位 · 便民触手可及</div>
+        </div>
+        <div class="concept-item">
+            <div class="concept-key">⭐ 一点即评</div>
+            <div class="concept-val">服务点评 · 闭环提升品质</div>
+        </div>
+    </div>
+</header>
+
+<!-- 品牌内涵 -->
+<section>
+    <div class="section-title">品牌内涵与Logo设计对照</div>
+    <div class="内涵-grid">
+        <div class="内涵-card">
+            <div class="内涵-key">⭐ 一点即达</div>
+            <div class="内涵-desc">线上"点"击手机，诉求直达党支部。<br>手指点击是数字入口，涟漪代表诉求的扩散与响应。</div>
+            <div class="内涵-match">→ 手指 + 涟漪 = 数字触达</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key">⭐ 一点即享</div>
+            <div class="内涵-desc">线下"点"位服务，便民触手可及。<br>心形象征服务覆盖每个角落，党政服务温暖人心。</div>
+            <div class="内涵-match">→ 心形 = 温暖服务覆盖</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key">⭐ 一点即评</div>
+            <div class="内涵-desc">服务"点"评反馈，闭环提升品质。<br>涟漪归位心形 = 诉求→响应→评价的完整闭环。</div>
+            <div class="内涵-match">→ 涟漪回归 = 品质闭环</div>
+        </div>
+    </div>
+</section>
+
+<!-- Logo展示 -->
+<section>
+    <div class="section-title">Logo设计</div>
+    <div class="scheme-row">
+        <!-- 深色背景 -->
+        <div class="scheme-card scheme-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="240" height="280">
+              <defs>
+                <linearGradient id="bgr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C62828"/><stop offset="50%" stop-color="#B71C1C"/><stop offset="100%" stop-color="#7F0000"/></linearGradient>
+                <linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE57F"/><stop offset="50%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient>
+                <linearGradient id="gf" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FFA000"/></linearGradient>
+                <linearGradient id="sh" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="rgba(255,255,255,0.45)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient>
+                <filter id="shd"><feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#7F0000" flood-opacity="0.4"/></filter>
+                <filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <circle cx="200" cy="200" r="180" fill="url(#bgr)" filter="url(#shd)"/>
+              <circle cx="200" cy="200" r="173" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1.5"/>
+              <ellipse cx="200" cy="110" rx="110" ry="58" fill="url(#sh)"/>
+              <!-- 党徽 -->
+              <g transform="translate(200,85)" filter="url(#gl)"><polygon points="0,-34 8,-12 31,-12 13,3 20,25 0,12 -20,25 -13,3 -31,-12 -8,-12" fill="url(#gg)"/></g>
+              <!-- 手指涟漪 -->
+              <g transform="translate(200,200)">
+                <circle cx="0" cy="0" r="50" fill="none" stroke="url(#gg)" stroke-width="1.5" opacity="0.18"/>
+                <circle cx="0" cy="0" r="35" fill="none" stroke="url(#gg)" stroke-width="1.8" opacity="0.28"/>
+                <circle cx="0" cy="0" r="20" fill="none" stroke="url(#gg)" stroke-width="2" opacity="0.5"/>
+                <g transform="translate(28,-28) rotate(-45)" filter="url(#gl)"><rect x="-6" y="-20" width="12" height="22" rx="6" fill="url(#gf)"/></g>
+                <circle cx="0" cy="0" r="10" fill="url(#gg)"/><circle cx="0" cy="0" r="6.5" fill="#B71C1C"/><circle cx="-1.5" cy="-1.5" r="3" fill="rgba(255,255,255,0.5)"/>
+              </g>
+              <!-- 心形 -->
+              <path d="M200,305 C155,250 100,208 100,162 C100,128 133,105 200,143 C267,105 300,128 300,162 C300,208 245,250 200,305 Z" fill="#FF1744" opacity="0.2" filter="url(#gl)"/>
+              <path d="M200,298 C156,244 104,204 104,161 C104,129 134,107 200,143 C266,107 296,129 296,161 C296,204 244,244 200,298 Z" fill="white"/>
+              <path d="M200,298 C156,244 104,204 104,161 C104,129 134,107 200,143 C266,107 296,129 296,161 C296,204 244,244 200,298 Z" fill="#FFCDD2" opacity="0.25"/>
+              <ellipse cx="153" cy="145" rx="25" ry="17" fill="rgba(255,255,255,0.7)" transform="rotate(-30 153 145)"/>
+              <!-- 文字 -->
+              <line x1="120" y1="320" x2="280" y2="320" stroke="url(#gg)" stroke-width="1" opacity="0.4"/>
+              <text x="200" y="355" font-family="serif" font-size="46" font-weight="700" fill="white" text-anchor="middle" letter-spacing="10">一点办</text>
+              <text x="200" y="378" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="5">TOUCH · HEART · TRUST</text>
+              <text x="200" y="400" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.38)" text-anchor="middle" letter-spacing="2">支部引领 · 科技赋能 · 一点办成 · 服务到家</text>
+            </svg>
+            <div class="scheme-name" style="color:white;">方案一：党徽居上 · 心形主体</div>
+            <div class="scheme-desc" style="color:#666;">党徽在顶部，心形在底部，手指点击心形。层次分明。</div>
+        </div>
+
+        <!-- 纯红底 -->
+        <div class="scheme-card scheme-red">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="240" height="280">
+              <defs>
+                <linearGradient id="bgr2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C62828"/><stop offset="50%" stop-color="#B71C1C"/><stop offset="100%" stop-color="#7F0000"/></linearGradient>
+                <linearGradient id="gg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE57F"/><stop offset="50%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient>
+                <linearGradient id="gf2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FFA000"/></linearGradient>
+                <linearGradient id="sh2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="rgba(255,255,255,0.45)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient>
+                <filter id="shd2"><feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#7F0000" flood-opacity="0.4"/></filter>
+                <filter id="gl2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <circle cx="200" cy="200" r="180" fill="url(#bgr2)" filter="url(#shd2)"/>
+              <circle cx="200" cy="200" r="173" fill="none" stroke="rgba(255,215,0,0.25)" stroke-width="1.5"/>
+              <ellipse cx="200" cy="110" rx="110" ry="58" fill="url(#sh2)"/>
+              <!-- 党徽 -->
+              <g transform="translate(200,85)" filter="url(#gl2)"><polygon points="0,-34 8,-12 31,-12 13,3 20,25 0,12 -20,25 -13,3 -31,-12 -8,-12" fill="url(#gg2)"/></g>
+              <!-- 手指涟漪 -->
+              <g transform="translate(200,200)">
+                <circle cx="0" cy="0" r="50" fill="none" stroke="url(#gg2)" stroke-width="1.5" opacity="0.18"/>
+                <circle cx="0" cy="0" r="35" fill="none" stroke="url(#gg2)" stroke-width="1.8" opacity="0.28"/>
+                <circle cx="0" cy="0" r="20" fill="none" stroke="url(#gg2)" stroke-width="2" opacity="0.5"/>
+                <g transform="translate(28,-28) rotate(-45)" filter="url(#gl2)"><rect x="-6" y="-20" width="12" height="22" rx="6" fill="url(#gf2)"/></g>
+                <circle cx="0" cy="0" r="10" fill="url(#gg2)"/><circle cx="0" cy="0" r="6.5" fill="#B71C1C"/><circle cx="-1.5" cy="-1.5" r="3" fill="rgba(255,255,255,0.5)"/>
+              </g>
+              <!-- 心形 -->
+              <path d="M200,305 C155,250 100,208 100,162 C100,128 133,105 200,143 C267,105 300,128 300,162 C300,208 245,250 200,305 Z" fill="#FF1744" opacity="0.2" filter="url(#gl2)"/>
+              <path d="M200,298 C156,244 104,204 104,161 C104,129 134,107 200,143 C266,107 296,129 296,161 C296,204 244,244 200,298 Z" fill="white"/>
+              <path d="M200,298 C156,244 104,204 104,161 C104,129 134,107 200,143 C266,107 296,129 296,161 C296,204 244,244 200,298 Z" fill="#FFCDD2" opacity="0.25"/>
+              <ellipse cx="153" cy="145" rx="25" ry="17" fill="rgba(255,255,255,0.7)" transform="rotate(-30 153 145)"/>
+              <line x1="120" y1="320" x2="280" y2="320" stroke="url(#gg2)" stroke-width="1" opacity="0.4"/>
+              <text x="200" y="355" font-family="serif" font-size="46" font-weight="700" fill="white" text-anchor="middle" letter-spacing="10">一点办</text>
+              <text x="200" y="378" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="5">TOUCH · HEART · TRUST</text>
+              <text x="200" y="400" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.38)" text-anchor="middle" letter-spacing="2">支部引领 · 科技赋能 · 一点办成 · 服务到家</text>
+            </svg>
+            <div class="scheme-name" style="color:white;">方案二：纯红渐变底</div>
+            <div class="scheme-desc" style="color:rgba(255,255,255,0.6);">党红渐变背景，最具冲击力和政务感。</div>
+        </div>
+
+        <!-- 黑色极简 -->
+        <div class="scheme-card scheme-black">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="240" height="280">
+              <defs>
+                <linearGradient id="bgr3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C62828"/><stop offset="50%" stop-color="#B71C1C"/><stop offset="100%" stop-color="#7F0000"/></linearGradient>
+                <linearGradient id="gg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE57F"/><stop offset="50%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FF8F00"/></linearGradient>
+                <linearGradient id="gf3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700"/><stop offset="100%" stop-color="#FFA000"/></linearGradient>
+                <filter id="gl3"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <circle cx="200" cy="200" r="180" fill="url(#bgr3)"/>
+              <circle cx="200" cy="200" r="173" fill="none" stroke="rgba(255,215,0,0.25)" stroke-width="1.5"/>
+              <g transform="translate(200,85)" filter="url(#gl3)"><polygon points="0,-34 8,-12 31,-12 13,3 20,25 0,12 -20,25 -13,3 -31,-12 -8,-12" fill="url(#gg3)"/></g>
+              <g transform="translate(200,200)">
+                <circle cx="0" cy="0" r="50" fill="none" stroke="url(#gg3)" stroke-width="1.5" opacity="0.18"/>
+                <circle cx="0" cy="0" r="35" fill="none" stroke="url(#gg3)" stroke-width="1.8" opacity="0.28"/>
+                <circle cx="0" cy="0" r="20" fill="none" stroke="url(#gg3)" stroke-width="2" opacity="0.5"/>
+                <g transform="translate(28,-28) rotate(-45)" filter="url(#gl3)"><rect x="-6" y="-20" width="12" height="22" rx="6" fill="url(#gf3)"/></g>
+                <circle cx="0" cy="0" r="10" fill="url(#gg3)"/><circle cx="0" cy="0" r="6.5" fill="#B71C1C"/><circle cx="-1.5" cy="-1.5" r="3" fill="rgba(255,255,255,0.5)"/>
+              </g>
+              <path d="M200,305 C155,250 100,208 100,162 C100,128 133,105 200,143 C267,105 300,128 300,162 C300,208 245,250 200,305 Z" fill="#FF1744" opacity="0.2" filter="url(#gl3)"/>
+              <path d="M200,298 C156,244 104,204 104,161 C104,129 134,107 200,143 C266,107 296,129 296,161 C296,204 244,244 200,298 Z" fill="white"/>
+              <path d="M200,298 C156,244 104,204 104,161 C104,129 134,107 200,143 C266,107 296,129 296,161 C296,204 244,244 200,298 Z" fill="#FFCDD2" opacity="0.25"/>
+              <ellipse cx="153" cy="145" rx="25" ry="17" fill="rgba(255,255,255,0.7)" transform="rotate(-30 153 145)"/>
+              <line x1="120" y1="320" x2="280" y2="320" stroke="url(#gg3)" stroke-width="1" opacity="0.4"/>
+              <text x="200" y="355" font-family="serif" font-size="46" font-weight="700" fill="white" text-anchor="middle" letter-spacing="10">一点办</text>
+              <text x="200" y="378" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="5">TOUCH · HEART · TRUST</text>
+              <text x="200" y="400" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.38)" text-anchor="middle" letter-spacing="2">支部引领 · 科技赋能 · 一点办成 · 服务到家</text>
+            </svg>
+            <div class="scheme-name" style="color:white;">方案三：极简黑底</div>
+            <div class="scheme-desc" style="color:#666;">黑色背景凸显党红，最强视觉对比。</div>
+        </div>
+    </div>
+</section>
+
+<!-- 元素解析 -->
+<section>
+    <div class="section-title gold">设计元素深度解析</div>
+    <div class="内涵-grid" style="margin-top:4px;">
+        <div class="内涵-card" style="border-color:#FFD700;">
+            <div class="内涵-key" style="color:#FFD700;">🏛️ 党徽 · 顶部最高处</div>
+            <div class="内涵-desc">金色五角星置于Logo最高处，象征党组织领导核心，是整个视觉的最高权力和信任锚点。</div>
+        </div>
+        <div class="内涵-card" style="border-color:#FFCDD2;">
+            <div class="内涵-key" style="color:#FF8A80;">❤️ 心形 · 主体中央</div>
+            <div class="内涵-desc">白色心形是党群同心的视觉符号。"白心红边"寓意党群血浓于水，是情感的锚点。</div>
+        </div>
+        <div class="内涵-card" style="border-color:#E3F2FD;">
+            <div class="内涵-key" style="color:#82B1FF;">👆 手指 · 点击交互</div>
+            <div class="内涵-desc">金色手指从右上45度点击，代表数字化"一点"。涟漪象征诉求扩散与响应。</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key" style="color:#FFD700;">💫 三层涟漪 · 闭环隐喻</div>
+            <div class="内涵-desc">三层金色圆环代表"诉求→响应→评价"的完整服务闭环，涟漪越大代表服务越广。</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key" style="color:#FFD700;">🔴 党红底色 · 庄重现代</div>
+            <div class="内涵-desc">党红渐变从深红到暗红，庄严稳重。光泽效果和金色点缀增加现代感和生命力。</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key" style="color:#FFD700;">📝 TOUCH · HEART · TRUST</div>
+            <div class="内涵-desc">三个英文词形成品牌叙事：点击产生连接，连接建立信任，信任创造服务价值。</div>
+        </div>
+    </div>
+</section>
+
+<!-- 色彩体系 -->
+<section>
+    <div class="section-title gold">色彩体系</div>
+    <div class="color-row" style="margin-top:8px;">
+        <div class="color-item"><div class="color-swatch" style="background:linear-gradient(135deg,#C62828,#B71C1C,#7F0000);"></div><div class="color-name">党红渐变</div><div class="color-hex">#C62828 → #7F0000</div></div>
+        <div class="color-item"><div class="color-swatch" style="background:#FFD700;"></div><div class="color-name">金黄</div><div class="color-hex">#FFD700</div></div>
+        <div class="color-item"><div class="color-swatch" style="background:#FFE57F;"></div><div class="color-name">淡金</div><div class="color-hex">#FFE57F</div></div>
+        <div class="color-item"><div class="color-swatch" style="background:#FF8F00;"></div><div class="color-name">深金</div><div class="color-hex">#FF8F00</div></div>
+        <div class="color-item"><div class="color-swatch" style="background:#FF1744;"></div><div class="color-name">心红</div><div class="color-hex">#FF1744</div></div>
+        <div class="color-item"><div class="color-swatch" style="background:#FFCDD2;"></div><div class="color-name">淡粉红</div><div class="color-hex">#FFCDD2</div></div>
+        <div class="color-item"><div class="color-swatch" style="background:#FFFFFF;box-shadow:0 4px 16px rgba(0,0,0,0.3);"></div><div class="color-name">纯白</div><div class="color-hex">#FFFFFF</div></div>
+    </div>
+</section>
+
+<!-- 变体 -->
+<section>
+    <div class="section-title">应用变体</div>
+    <div class="variant-row">
+        <div class="variant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="90" fill="#B71C1C"/>
+              <g transform="translate(100,50)"><polygon points="0,-28 6,-10 24,-10 10,3 16,21 0,11 -16,21 -10,3 -24,-10 -6,-10" fill="#FFD700" transform="scale(0.7)"/></g>
+              <path d="M100,138 C82,116 62,100 62,80 C62,62 80,48 100,66 C120,48 138,62 138,80 C138,100 118,116 100,138 Z" fill="white"/>
+              <g transform="translate(100,90)"><circle cx="0" cy="0" r="8" fill="#FFD700"/><circle cx="0" cy="0" r="5" fill="#B71C1C"/></g>
+              <text x="100" y="170" font-family="serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">一点办</text>
+            </svg>
+            <div class="variant-label">简化版 · 适合48px以下</div>
+        </div>
+        <div class="variant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <rect x="10" y="10" width="180" height="180" rx="30" fill="#B71C1C"/>
+              <g transform="translate(100,50)"><polygon points="0,-28 6,-10 24,-10 10,3 16,21 0,11 -16,21 -10,3 -24,-10 -6,-10" fill="#FFD700" transform="scale(0.7)"/></g>
+              <path d="M100,138 C82,116 62,100 62,80 C62,62 80,48 100,66 C120,48 138,62 138,80 C138,100 118,116 100,138 Z" fill="white"/>
+              <g transform="translate(100,90)"><circle cx="0" cy="0" r="8" fill="#FFD700"/><circle cx="0" cy="0" r="5" fill="#B71C1C"/></g>
+              <text x="100" y="170" font-family="serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">一点办</text>
+            </svg>
+            <div class="variant-label">圆角方版 · APP图标</div>
+        </div>
+        <div class="variant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="90" fill="#000"/>
+              <circle cx="100" cy="100" r="85" fill="none" stroke="#B71C1C" stroke-width="1"/>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#B71C1C" stroke-width="0.5" stroke-dasharray="3 3"/>
+              <g transform="translate(100,45)"><polygon points="0,-28 6,-10 24,-10 10,3 16,21 0,11 -16,21 -10,3 -24,-10 -6,-10" fill="#FFD700" transform="scale(0.55)"/></g>
+              <path d="M100,138 C82,116 62,100 62,80 C62,62 80,48 100,66 C120,48 138,62 138,80 C138,100 118,116 100,138 Z" fill="#B71C1C"/>
+              <g transform="translate(100,90)"><circle cx="0" cy="0" r="8" fill="#FFD700"/><circle cx="0" cy="0" r="5" fill="#B71C1C"/></g>
+              <text x="100" y="170" font-family="serif" font-size="16" font-weight="700" fill="#B71C1C" text-anchor="middle">一点办</text>
+            </svg>
+            <div class="variant-label">暗黑模式 · 浅色背景</div>
+        </div>
+        <div class="variant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="90" fill="#B71C1C"/>
+              <path d="M100,138 C82,116 62,100 62,80 C62,62 80,48 100,66 C120,48 138,62 138,80 C138,100 118,116 100,138 Z" fill="white"/>
+              <g transform="translate(100,90)"><circle cx="0" cy="0" r="8" fill="#FFD700"/><circle cx="0" cy="0" r="5" fill="#B71C1C"/><circle cx="0" cy="0" r="14" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.5"/></g>
+              <text x="100" y="170" font-family="serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">一点办</text>
+            </svg>
+            <div class="variant-label">无党徽版 · 最简化</div>
+        </div>
+        <div class="variant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="90" fill="url(#bgr2)"/>
+              <g transform="translate(100,50)"><polygon points="0,-28 6,-10 24,-10 10,3 16,21 0,11 -16,21 -10,3 -24,-10 -6,-10" fill="#FFD700" transform="scale(0.7)"/></g>
+              <path d="M100,138 C82,116 62,100 62,80 C62,62 80,48 100,66 C120,48 138,62 138,80 C138,100 118,116 100,138 Z" fill="none" stroke="#FFD700" stroke-width="2"/>
+              <path d="M100,130 C85,111 68,98 68,81 C68,65 83,53 100,70 C117,53 132,65 132,81 C132,98 115,111 100,130 Z" fill="white"/>
+              <g transform="translate(100,90)"><circle cx="0" cy="0" r="8" fill="#FFD700"/><circle cx="0" cy="0" r="5" fill="#B71C1C"/></g>
+              <text x="100" y="170" font-family="serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">一点办</text>
+            </svg>
+            <div class="variant-label">线条心版 · 轻盈感</div>
+        </div>
+    </div>
+</section>
+
+<!-- 导出 -->
+<section>
+    <div class="section-title gold">导出建议</div>
+    <div class="内涵-grid" style="margin-top:4px;">
+        <div class="内涵-card">
+            <div class="内涵-key">📱 APP图标</div>
+            <div class="内涵-desc">从SVG导出PNG，建议尺寸：<br>1024×1024 / 512×512 / 256×256 / 144×144 / 96×96 / 72×72 / 48×48 / 32×32</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key">📄 SVG源文件</div>
+            <div class="内涵-desc">矢量文件，无限放大不失真<br>适合印刷、户外广告、VI设计</div>
+        </div>
+        <div class="内涵-card">
+            <div class="内涵-key">🖼️ PNG透明底</div>
+            <div class="内涵-desc">去掉背景的透明PNG，适合：<br>微信/QQ表情、PPT、网页图标等</div>
+        </div>
+    </div>
+</section>
+
+<div class="footer">
+    <p>源文件：`C:\Users\worker\.qclaw\workspace\一点办_APP_Logo.svg`</p>
+    <p>展示页：`C:\Users\worker\.qclaw\workspace\一点办_Logo展示.html`</p>
+</div>
+
+</body>
+</html>

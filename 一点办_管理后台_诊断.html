@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>导航诊断</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: sans-serif; background: #f5f5f5; }
+#sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 200px; background: white; border-right: 1px solid #e5e7eb; padding-top: 10px; }
+.sidebar-item { padding: 10px 16px; cursor: pointer; color: #4b5563; font-size: 13px; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: #f9fafb; }
+.sidebar-item.active { background: #fef2f2; color: #b91c1c; border-left-color: #b91c1c; font-weight: 600; }
+#main { margin-left: 200px; padding: 20px; }
+.page-section { display: none; padding: 20px; }
+.page-section.active { display: block; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.stat-value { font-size: 24px; font-weight: 700; color: #b91c1c; }
+.stat-label { font-size: 12px; color: #6b7280; margin-top: 4px; }
+.table-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-top: 16px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 12px; color: #6b7280; padding: 8px; border-bottom: 1px solid #e5e7eb; }
+td { font-size: 13px; padding: 10px 8px; border-bottom: 1px solid #f3f4f6; }
+tr:hover td { background: #f9fafb; }
+.status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+.s-pending { background: #fff3e0; color: #e65100; }
+.s-done { background: #e8f5e9; color: #2e7d32; }
+.s-active { background: #e3f2fd; color: #1565c0; }
+#pageTitle { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #1f2937; }
+.breadcrumb { font-size: 12px; color: #6b7280; margin-bottom: 16px; }
+</style>
+</head><body>
+
+<div id="sidebar">
+    <div style="padding:8px 16px;font-size:11px;color:#9ca3af;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">导航</div>
+    <div class="sidebar-item active" data-page="dashboard" onclick="navigateTo('dashboard')">📊 工作台</div>
+    <div class="sidebar-item" data-page="party" onclick="navigateTo('party')">🎗️ 党群家</div>
+    <div class="sidebar-item" data-page="appeal" onclick="navigateTo('appeal')">⚡ 马上办</div>
+    <div class="sidebar-item" data-page="service" onclick="navigateTo('service')">📅 约服务</div>
+    <div class="sidebar-item" data-page="warehouse" onclick="navigateTo('warehouse')">🏪 红色便民仓</div>
+    <div class="sidebar-item" data-page="govstation" onclick="navigateTo('govstation')">🏛️ 政务自助站</div>
+    <div class="sidebar-item" data-page="community" onclick="navigateTo('community')">💬 邻里圈</div>
+    <div class="sidebar-item" data-page="rating" onclick="navigateTo('rating')">⭐ 评实效</div>
+    <div class="sidebar-item" data-page="points-rules" onclick="navigateTo('points-rules')">🎁 积分规则</div>
+    <div class="sidebar-item" data-page="data" onclick="navigateTo('data')">📊 数据分析</div>
+</div>
+
+<div id="main">
+    <div class="breadcrumb">首页 &gt; <span id="breadcrumbText">工作台</span></div>
+    <div id="pageTitle">工作台</div>
+
+    <!-- 工作台 -->
+    <div class="page-section active" id="page-dashboard">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">1,234</div><div class="stat-label">本月诉求</div></div>
+            <div class="stat"><div class="stat-value">12</div><div class="stat-label">待处理</div></div>
+            <div class="stat"><div class="stat-value">1,156</div><div class="stat-label">已完成</div></div>
+            <div class="stat"><div class="stat-value">94.2%</div><div class="stat-label">完成率</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">待处理诉求</div>
+            <table><thead><tr><th>编号</th><th>类型</th><th>内容</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody>
+                <tr><td>AP24041801</td><td>物业类</td><td>楼道灯不亮</td><td><span class="status s-pending">待派单</span></td><td>2026-04-18 10:30</td><td><button onclick="navigateTo('appeal')" style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+                <tr><td>AP24041802</td><td>物业类</td><td>水表故障</td><td><span class="status s-done">处理中</span></td><td>2026-04-18 09:15</td><td><button onclick="navigateTo('appeal')" style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+                <tr><td>AP24041803</td><td>物业类</td><td>停车位争议</td><td><span class="status s-pending">待处理</span></td><td>2026-04-18 08:50</td><td><button onclick="navigateTo('appeal')" style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 党群家 -->
+    <div class="page-section" id="page-party">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">86</div><div class="stat-label">党员总数</div></div>
+            <div class="stat"><div class="stat-value">82</div><div class="stat-label">已报到</div></div>
+            <div class="stat"><div class="stat-value">1,234h</div><div class="stat-label">本月服务</div></div>
+            <div class="stat"><div class="stat-value">Top3</div><div class="stat-label">平均排名</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">党员列表</div>
+            <table><thead><tr><th>ID</th><th>姓名</th><th>支部</th><th>职务</th><th>积分</th><th>服务时长</th><th>操作</th></tr></thead><tbody>
+                <tr><td>P001</td><td>陈建国</td><td>第一支部</td><td>书记</td><td>1280</td><td>45h</td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+                <tr><td>P002</td><td>王丽</td><td>第二支部</td><td>委员</td><td>1156</td><td>38h</td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+                <tr><td>P003</td><td>李明</td><td>第一支部</td><td>党员</td><td>980</td><td>32h</td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 马上办 -->
+    <div class="page-section" id="page-appeal">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">156</div><div class="stat-label">诉求总数</div></div>
+            <div class="stat"><div class="stat-value">12</div><div class="stat-label">待派单</div></div>
+            <div class="stat"><div class="stat-value">89</div><div class="stat-label">处理中</div></div>
+            <div class="stat"><div class="stat-value">55</div><div class="stat-label">已完成</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">诉求列表</div>
+            <table><thead><tr><th>编号</th><th>类型</th><th>内容</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody>
+                <tr><td>AP24041801</td><td>物业类</td><td>楼道灯不亮 - 3-2单元</td><td><span class="status s-pending">待派单</span></td><td>2026-04-18 10:30</td><td><button onclick="assignOrder('AP24041801')" style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">立即派单</button></td></tr>
+                <tr><td>AP24041802</td><td>物业类</td><td>水表故障 - 4-1-201</td><td><span class="status s-done">处理中</span></td><td>2026-04-18 09:15</td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 约服务 -->
+    <div class="page-section" id="page-service">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">28</div><div class="stat-label">服务商入驻</div></div>
+            <div class="stat"><div class="stat-value">25</div><div class="stat-label">已入驻</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">待入驻</div></div>
+            <div class="stat"><div class="stat-value">512</div><div class="stat-label">本月订单</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">服务商列表</div>
+            <table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>价格</th><th>评分</th><th>接单</th><th>状态</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#P001</td><td>开锁王</td><td>开锁</td><td>50元起</td><td>4.9</td><td>328</td><td><span class="status s-active">已入驻</span></td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+                <tr><td>#P002</td><td>水电维修专业服务</td><td>水电</td><td>80元起</td><td>4.8</td><td>156</td><td><span class="status s-active">已入驻</span></td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 红色便民仓 -->
+    <div class="page-section" id="page-warehouse">
+        <div style="font-size:16px;font-weight:700;margin-bottom:12px;">🏪 红色便民仓 - 服务商管理</div>
+        <div class="stats">
+            <div class="stat"><div class="stat-value">28</div><div class="stat-label">全部商家</div></div>
+            <div class="stat"><div class="stat-value">25</div><div class="stat-label">已入驻</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat"><div class="stat-value">4.8</div><div class="stat-label">平均评分</div></div>
+        </div>
+        <div style="background:#fff8f5;padding:14px;border-radius:8px;margin-bottom:16px;border-left:3px solid #b91c1c;">
+            <div style="font-size:12px;font-weight:700;color:#b91c1c;margin-bottom:6px;">办事标准承诺</div>
+            <div style="font-size:11px;color:#6b7280;line-height:1.8;">1. 锁类开锁类：明码标价，党员志愿免费</div>
+            <div style="font-size:11px;color:#6b7280;line-height:1.8;">2. 水电维修：双人以上处理，诚信经营，明码标价</div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">服务商列表</div>
+            <table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>价格</th><th>均价</th><th>评分</th><th>接单</th><th>状态</th><th>公示</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#P001</td><td>开锁王</td><td>开锁</td><td>50元起</td><td>党员价40元</td><td>4.9</td><td>328</td><td><span class="status s-active">已入驻</span></td><td><span class="status s-active">公示</span></td><td><button style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">审核</button></td></tr>
+                <tr><td>#P002</td><td>水电维修专业服务</td><td>水电</td><td>80元起</td><td>党员价60元</td><td>4.8</td><td>156</td><td><span class="status s-active">已入驻</span></td><td><span class="status s-active">公示</span></td><td><button style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">审核</button></td></tr>
+                <tr><td>#P003</td><td>家政公司</td><td>家政</td><td>60元起</td><td>党员价50元</td><td>4.7</td><td>512</td><td><span class="status s-active">已入驻</span></td><td><span class="status s-active">公示</span></td><td><button style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">审核</button></td></tr>
+                <tr><td>#P004</td><td>幸福搬家服务</td><td>搬家</td><td>150元起</td><td>待定</td><td>4.6</td><td>89</td><td><span class="status s-pending">待审核</span></td><td><span style="color:#9ca3af;">待审</span></td><td><button style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">审核</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 政务自助站 -->
+    <div class="page-section" id="page-govstation">
+        <div style="font-size:16px;font-weight:700;margin-bottom:12px;">🏛️ 政务自助站 - 事项配置</div>
+        <div class="stats">
+            <div class="stat"><div class="stat-value">6</div><div class="stat-label">配置事项</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">已配置</div></div>
+            <div class="stat"><div class="stat-value">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat"><div class="stat-value">156</div><div class="stat-label">有效预约</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">政务事项列表</div>
+            <table><thead><tr><th>ID</th><th>事项</th><th>承办部门</th><th>时限</th><th>办理时间</th><th>状态</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#G001</td><td>社保查询</td><td>人社局窗口</td><td>5-15工作日</td><td>法定工作日</td><td><span class="status s-active">已上线</span></td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">编辑</button></td></tr>
+                <tr><td>#G002</td><td>医保缴费证明</td><td>服务中心</td><td>3-5工作日</td><td>限时办理</td><td><span class="status s-active">已上线</span></td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">编辑</button></td></tr>
+                <tr><td>#G003</td><td>公积金查询</td><td>建设局</td><td>3工作日</td><td>法定工作日</td><td><span class="status s-active">已上线</span></td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">编辑</button></td></tr>
+                <tr><td>#G004</td><td>房产证明</td><td>房产局</td><td>15工作日</td><td>法定工作日</td><td><span class="status s-pending">待上线</span></td><td><button style="background:#b91c1c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">审核</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 邻里圈 -->
+    <div class="page-section" id="page-community">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">1,234</div><div class="stat-label">帖子总数</div></div>
+            <div class="stat"><div class="stat-value">856</div><div class="stat-label">今日活跃</div></div>
+            <div class="stat"><div class="stat-value">45</div><div class="stat-label">互助记录</div></div>
+            <div class="stat"><div class="stat-value">12</div><div class="stat-label">进行中投票</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">投票列表</div>
+            <table><thead><tr><th>ID</th><th>标题</th><th>类型</th><th>状态</th><th>参与</th><th>截止</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#V001</td><td>小区公共收益使用方案</td><td>公共收益</td><td><span class="status s-pending">进行中</span></td><td>23人</td><td>04-25</td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+                <tr><td>#V002</td><td>3号楼加装电梯方案</td><td>公共设施</td><td><span class="status s-done">已通过(78%)</span></td><td>86人</td><td>04-10</td><td><button style="background:#f3f4f6;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;">查看</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 评实效 -->
+    <div class="page-section" id="page-rating">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">4.8</div><div class="stat-label">平均评分</div></div>
+            <div class="stat"><div class="stat-value">1,234</div><div class="stat-label">评价总数</div></div>
+            <div class="stat"><div class="stat-value">156,780</div><div class="stat-label">积分总量</div></div>
+            <div class="stat"><div class="stat-value">28</div><div class="stat-label">获奖订单</div></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;">最新评价</div>
+            <table><thead><tr><th>评价人</th><th>服务类型</th><th>评分</th><th>内容</th><th>时间</th></tr></thead><tbody>
+                <tr><td>张先生</td><td>开锁</td><td>5.0</td><td>一分钟内上门，真正便民！</td><td>04-17 14:30</td></tr>
+                <tr><td>李女士</td><td>水电</td><td>4.5</td><td>报价合理，服务周到</td><td>04-16 10:15</td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 积分规则 -->
+    <div class="page-section" id="page-points-rules">
+        <div style="font-size:16px;font-weight:700;margin-bottom:12px;">🎁 积分规则配置</div>
+        <div class="table-box" style="margin-bottom:16px;">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;">积分获取规则</div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6;"><span>上报诉求</span><span style="color:#16a34a;font-weight:700;">+5积分</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6;"><span>志愿服务</span><span style="color:#16a34a;font-weight:700;">+10积分</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6;"><span>认领微心愿</span><span style="color:#16a34a;font-weight:700;">+20积分</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;"><span>发布邻里互助</span><span style="color:#16a34a;font-weight:700;">+5积分</span></div>
+        </div>
+        <div class="table-box">
+            <div style="font-size:14px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;">积分兑换规则</div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6;"><span>积分兑换小礼品</span><span style="color:#e65100;font-weight:700;">200积分=1个</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;"><span>积分兑换咖啡券</span><span style="color:#e65100;font-weight:700;">100积分=1张</span></div>
+        </div>
+    </div>
+
+    <!-- 数据分析 -->
+    <div class="page-section" id="page-data">
+        <div class="stats">
+            <div class="stat"><div class="stat-value">94.2%</div><div class="stat-label">平均办结率</div></div>
+            <div class="stat"><div class="stat-value">4.2h</div><div class="stat-label">平均处理时长</div></div>
+            <div class="stat"><div class="stat-value">4.8</div><div class="stat-label">平均满意度</div></div>
+            <div class="stat"><div class="stat-value">2,345</div><div class="stat-label">活跃用户</div></div>
+        </div>
+        <div style="background:white;border-radius:8px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+            <div style="font-size:14px;font-weight:700;margin-bottom:16px;">数据趋势图</div>
+            <div style="display:flex;align-items:flex-end;gap:20px;height:100px;">
+                <div style="flex:1;text-align:center;"><div style="background:#b91c1c;height:60px;width:100%;border-radius:4px 4px 0 0;"></div><div style="font-size:11px;color:#6b7280;margin-top:4px;">1月</div></div>
+                <div style="flex:1;text-align:center;"><div style="background:#b91c1c;height:70px;width:100%;border-radius:4px 4px 0 0;"></div><div style="font-size:11px;color:#6b7280;margin-top:4px;">2月</div></div>
+                <div style="flex:1;text-align:center;"><div style="background:#b91c1c;height:80px;width:100%;border-radius:4px 4px 0 0;"></div><div style="font-size:11px;color:#6b7280;margin-top:4px;">3月</div></div>
+                <div style="flex:1;text-align:center;"><div style="background:#b91c1c;height:90px;width:100%;border-radius:4px 4px 0 0;"></div><div style="font-size:11px;color:#6b7280;margin-top:4px;">4月</div></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function navigateTo(pageId) {
+    // 清除所有高亮
+    var sidebarItems = document.querySelectorAll('.sidebar-item');
+    for (var i = 0; i < sidebarItems.length; i++) {
+        sidebarItems[i].classList.remove('active');
+    }
+    var pageSections = document.querySelectorAll('.page-section');
+    for (var j = 0; j < pageSections.length; j++) {
+        pageSections[j].classList.remove('active');
+    }
+
+    // 激活对应侧边栏
+    var sb = document.querySelector('[data-page="' + pageId + '"]');
+    if (sb) sb.classList.add('active');
+
+    // 激活对应页面
+    var pg = document.getElementById('page-' + pageId);
+    if (pg) pg.classList.add('active');
+
+    // 更新标题
+    var titles = {
+        dashboard: '工作台',
+        party: '党群家',
+        appeal: '马上办',
+        service: '约服务',
+        warehouse: '红色便民仓',
+        govstation: '政务自助站',
+        community: '邻里圈',
+        rating: '评实效',
+        'points-rules': '积分规则',
+        data: '数据分析'
+    };
+    var titleEl = document.getElementById('pageTitle');
+    if (titleEl) titleEl.textContent = titles[pageId] || pageId;
+    var breadcrumbEl = document.getElementById('breadcrumbText');
+    if (breadcrumbEl) breadcrumbEl.textContent = titles[pageId] || pageId;
+}
+
+function assignOrder(id) {
+    alert('派单成功！诉求编号: ' + id);
+}
+
+// 初始化
+console.log('导航诊断页面已加载');
+console.log('侧边栏项目数:', document.querySelectorAll('.sidebar-item').length);
+console.log('页面区块数:', document.querySelectorAll('.page-section').length);
+</script>
+</body></html>

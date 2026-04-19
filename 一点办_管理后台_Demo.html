@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一点办 - 管理后台</title>
+<style>
+:root {
+    --primary: #B22222;
+    --primary-light: #FDF2F2;
+    --primary-dark: #8B0000;
+    --success: #2E7D32;
+    --warning: #E65100;
+    --danger: #C62828;
+    --info: #1565C0;
+    --bg-primary: #F0F2F5;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #E8EBEF;
+    --text-primary: #1F2937;
+    --text-secondary: #4B5563;
+    --text-tertiary: #9CA3AF;
+    --border: #E5E7EB;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --sidebar-width: 210px;
+    --header-height: 56px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans SC', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); font-size: 13px; }
+
+/* 顶部栏 */
+.header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-height); background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; z-index: 200; gap: 12px; }
+.header-logo { display: flex; align-items: center; gap: 10px; }
+.header-logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.header-logo-text { font-size: 16px; font-weight: 700; color: var(--primary); }
+.header-logo-sub { font-size: 10px; color: var(--text-tertiary); }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.header-time { font-size: 12px; color: var(--text-tertiary); }
+.header-user { display: flex; align-items: center; gap: 8px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+
+/* 侧边栏 */
+.sidebar { position: fixed; left: 0; top: var(--header-height); bottom: 0; width: var(--sidebar-width); background: white; border-right: 1px solid var(--border); overflow-y: auto; z-index: 100; padding-bottom: 20px; }
+.sidebar-section { padding: 12px 0 4px; }
+.sidebar-title { padding: 4px 16px; font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.sidebar-item { display: flex; align-items: center; padding: 9px 16px; color: var(--text-secondary); cursor: pointer; font-size: 13px; border-left: 3px solid transparent; transition: all 0.2s; user-select: none; }
+.sidebar-item:hover { background: var(--bg-primary); color: var(--text-primary); }
+.sidebar-item.active { background: var(--primary-light); color: var(--primary); border-left-color: var(--primary); font-weight: 600; }
+.sidebar-icon { width: 20px; margin-right: 10px; font-size: 14px; text-align: center; }
+.sidebar-badge { margin-left: auto; background: var(--danger); color: white; font-size: 10px; padding: 1px 6px; border-radius: 10px; }
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+/* 主内容 */
+.main { margin-left: var(--sidebar-width); margin-top: var(--header-height); padding: 24px; min-height: calc(100vh - var(--header-height)); }
+.breadcrumb { font-size: 12px; color: var(--text-tertiary); margin-bottom: 6px; }
+.page-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; }
+
+/* 页面区块 */
+.page-content { display: none; }
+.page-content.active { display: block; }
+
+/* 统计卡片 */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.stat-card { background: white; border-radius: 10px; padding: 16px; box-shadow: var(--shadow-sm); }
+.stat-card-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
+.stat-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+.stat-label { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+
+/* 快捷入口 */
+.quick-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+.quick-nav-item { background: white; border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+.quick-nav-item:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.quick-nav-item:active { transform: translateY(0); }
+.quick-nav-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin: 0 auto 8px; }
+.quick-nav-label { font-size: 12px; font-weight: 600; }
+.quick-nav-count { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+
+/* 图表区 */
+.charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 20px; }
+.chart-card { background: white; border-radius: 10px; padding: 16px; box-shadow: var(--shadow-sm); }
+.chart-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; }
+.chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+.chart-bar-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.chart-bar { width: 100%; background: linear-gradient(to top, var(--primary), #D4524A); border-radius: 4px 4px 0 0; position: relative; transition: height 0.3s; }
+.chart-bar-value { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; color: var(--primary); }
+.chart-bar-label { font-size: 9px; color: var(--text-tertiary); }
+
+/* 表格 */
+.table-card { background: white; border-radius: 10px; box-shadow: var(--shadow-sm); overflow: hidden; }
+.table-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.table-title { font-size: 14px; font-weight: 600; }
+.table-search { display: flex; align-items: center; gap: 6px; background: var(--bg-primary); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text-tertiary); }
+.table-search input { border: none; background: transparent; outline: none; font-size: 12px; width: 140px; color: var(--text-primary); }
+.table-btn { background: var(--bg-tertiary); color: var(--text-secondary); border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.table-btn:hover { background: var(--primary-light); color: var(--primary); }
+.table-btn.primary { background: var(--primary); color: white; }
+.table-btn.primary:hover { background: var(--primary-dark); }
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--bg-primary); }
+th { text-align: left; font-size: 11px; font-weight: 600; color: var(--text-tertiary); padding: 10px 14px; border-bottom: 1px solid var(--border); }
+td { font-size: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+tbody tr:hover td { background: var(--bg-primary); cursor: pointer; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* 状态标签 */
+.status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+.status.pending { background: #FFF3E0; color: var(--warning); }
+.status.doing { background: #E3F2FD; color: var(--info); }
+.status.done { background: #E8F5E9; color: var(--success); }
+.status.danger { background: #FFEBEE; color: var(--danger); }
+.status.info { background: var(--primary-light); color: var(--primary); }
+
+/* 列表卡片 */
+.list-card { background: white; border-radius: 10px; box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 14px; }
+.list-item { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+.list-item:hover { background: var(--bg-primary); }
+.list-item:last-child { border-bottom: none; }
+.list-item-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-right: 12px; flex-shrink: 0; }
+.list-item-content { flex: 1; }
+.list-item-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; display: flex; align-items: center; }
+.list-item-desc { font-size: 11px; color: var(--text-tertiary); }
+.list-item-arrow { color: var(--text-tertiary); font-size: 16px; margin-left: 8px; }
+
+/* 流程面板 */
+.flow-panel { background: white; border-radius: 10px; padding: 16px; box-shadow: var(--shadow-sm); margin-bottom: 14px; }
+.flow-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+.flow-steps { display: flex; align-items: center; gap: 0; }
+.flow-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+.flow-step::after { content: ''; position: absolute; top: 18px; left: 50%; width: 100%; height: 2px; background: var(--border); z-index: 0; }
+.flow-step:last-child::after { display: none; }
+.flow-step.done::after { background: var(--success); }
+.flow-step.current::after { background: linear-gradient(to right, var(--success) 50%, var(--border) 50%); }
+.flow-step-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; background: var(--bg-tertiary); color: var(--text-tertiary); border: 2px solid var(--border); z-index: 1; position: relative; }
+.flow-step.done .flow-step-icon { background: var(--success); color: white; border-color: var(--success); }
+.flow-step.current .flow-step-icon { background: var(--primary); color: white; border-color: var(--primary); }
+.flow-step-label { font-size: 11px; color: var(--text-tertiary); margin-top: 6px; text-align: center; }
+.flow-step.done .flow-step-label { color: var(--success); font-weight: 600; }
+.flow-step.current .flow-step-label { color: var(--primary); font-weight: 600; }
+
+/* 分页 */
+.pagination { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 14px 16px; }
+.page-btn { min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); background: white; color: var(--text-secondary); }
+.page-btn:hover { border-color: var(--primary); color: var(--primary); }
+.page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.page-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 弹窗 */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
+.modal-overlay.active { display: flex; }
+.modal { background: white; border-radius: 12px; width: 480px; max-width: 90vw; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column; }
+.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 600; }
+.modal-close { cursor: pointer; font-size: 18px; color: var(--text-tertiary); }
+.modal-close:hover { color: var(--text-primary); }
+.modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+.modal-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+/* 表单 */
+.form-group { margin-bottom: 14px; }
+.form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+.form-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; outline: none; transition: border-color 0.2s; }
+.form-input:focus { border-color: var(--primary); }
+
+/* Toast */
+.toast-msg { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 2000; display: none; }
+.toast-msg.show { display: block; animation: fadeUp 0.3s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+/* 标题栏 */
+.title-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+.title-bar h2 { font-size: 18px; font-weight: 700; }
+
+/* 绿色按钮 */
+.btn-primary { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-primary:hover { background: var(--primary-dark); }
+
+/* 公告样式 */
+.notice-item { display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 10px; }
+.notice-item:last-child { border-bottom: none; }
+.notice-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-top: 6px; flex-shrink: 0; }
+.notice-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<div class="header">
+    <div class="header-logo">
+        <div class="header-logo-icon">🏛️</div>
+        <div>
+            <div class="header-logo-text">一点办</div>
+            <div class="header-logo-sub">社区服务平台</div>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="header-time" id="headerTime"></div>
+        <div class="header-user">
+            <div class="avatar">管</div>
+            <div style="font-size:13px;font-weight:600;">管理员</div>
+        </div>
+    </div>
+</div>
+
+<!-- 侧边栏 -->
+<div class="sidebar">
+    <div class="sidebar-section">
+        <div class="sidebar-title">工作台</div>
+        <div class="sidebar-item active" data-page="dashboard"><span class="sidebar-icon">📊</span><span>工作台</span></div>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-title">五大板块</div>
+        <div class="sidebar-item" data-page="party"><span class="sidebar-icon">🎗️</span><span>党群家</span></div>
+        <div class="sidebar-item" data-page="appeal"><span class="sidebar-icon">⚡</span><span>马上办</span><span class="sidebar-badge">12</span></div>
+        <div class="sidebar-item" data-page="service"><span class="sidebar-icon">📅</span><span>约服务</span></div>
+        <div class="sidebar-item" data-page="warehouse"><span class="sidebar-icon">🏪</span><span>红色便民仓</span><span class="sidebar-badge">28</span></div>
+        <div class="sidebar-item" data-page="govstation"><span class="sidebar-icon">🏛️</span><span>政务自助站</span></div>
+        <div class="sidebar-item" data-page="community"><span class="sidebar-icon">💬</span><span>邻里圈</span></div>
+        <div class="sidebar-item" data-page="rating"><span class="sidebar-icon">⭐</span><span>评实效</span></div>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-title">辅助功能</div>
+        <div class="sidebar-item" data-page="points-rules"><span class="sidebar-icon">🎁</span><span>积分规则</span></div>
+        <div class="sidebar-item" data-page="data"><span class="sidebar-icon">📈</span><span>数据分析</span></div>
+        <div class="sidebar-item" data-page="notice"><span class="sidebar-icon">📢</span><span>公告管理</span></div>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-title">系统</div>
+        <div class="sidebar-item" data-page="settings"><span class="sidebar-icon">⚙️</span><span>系统设置</span></div>
+        <div class="sidebar-item" data-page="logs"><span class="sidebar-icon">📋</span><span>操作日志</span></div>
+    </div>
+</div>
+
+<!-- 主内容 -->
+<div class="main">
+    <div class="page-content active" id="page-dashboard">
+        <div class="breadcrumb">首页</div>
+        <div class="title-bar"><h2>工作台</h2></div>
+
+        <!-- 快捷入口 -->
+        <div class="quick-nav">
+            <div class="quick-nav-item" onclick="navigateTo('party')"><div class="quick-nav-icon" style="background:#FFEBEE;">🎗️</div><div class="quick-nav-label">党群家</div><div class="quick-nav-count">组织管理</div></div>
+            <div class="quick-nav-item" onclick="navigateTo('appeal')"><div class="quick-nav-icon" style="background:#FFF3E0;">⚡</div><div class="quick-nav-label">马上办</div><div class="quick-nav-count">诉求 156件</div></div>
+            <div class="quick-nav-item" onclick="navigateTo('service')"><div class="quick-nav-icon" style="background:#E3F2FD;">📅</div><div class="quick-nav-label">约服务</div><div class="quick-nav-count">商家 28家</div></div>
+            <div class="quick-nav-item" onclick="navigateTo('community')"><div class="quick-nav-icon" style="background:#F3E5F5;">💬</div><div class="quick-nav-label">邻里圈</div><div class="quick-nav-count">帖子 1,234</div></div>
+            <div class="quick-nav-item" onclick="navigateTo('rating')"><div class="quick-nav-icon" style="background:#E8F5E9;">⭐</div><div class="quick-nav-label">评实效</div><div class="quick-nav-count">积分 15.6万</div></div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFEBEE;">📋</div><div class="stat-value">1,234</div><div class="stat-label">本月诉求</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏳</div><div class="stat-value">12</div><div class="stat-label">待处理</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">✅</div><div class="stat-value">1,156</div><div class="stat-label">已完成</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">⭐</div><div class="stat-value">94.2%</div><div class="stat-label">完成率</div></div>
+        </div>
+
+        <!-- 图表 -->
+        <div class="charts-row">
+            <div class="chart-card">
+                <div class="chart-title">诉求趋势（近7天）</div>
+                <div class="chart-bars">
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:70px;"><span class="chart-bar-value">18</span></div><span class="chart-bar-label">周一</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:100px;"><span class="chart-bar-value">24</span></div><span class="chart-bar-label">周二</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:60px;"><span class="chart-bar-value">14</span></div><span class="chart-bar-label">周三</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:120px;"><span class="chart-bar-value">28</span></div><span class="chart-bar-label">周四</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:90px;"><span class="chart-bar-value">21</span></div><span class="chart-bar-label">周五</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:45px;"><span class="chart-bar-value">10</span></div><span class="chart-bar-label">周六</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:35px;"><span class="chart-bar-value">8</span></div><span class="chart-bar-label">周日</span></div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">诉求类型分布</div>
+                <div style="display:flex;flex-direction:column;gap:8px;padding-top:10px;">
+                    <div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--primary);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">物业类</span><span style="font-size:12px;font-weight:600;">35%</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--info);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">治安类</span><span style="font-size:12px;font-weight:600;">25%</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--success);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">环境类</span><span style="font-size:12px;font-weight:600;">20%</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--warning);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">其他类</span><span style="font-size:12px;font-weight:600;">20%</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 待处理诉求表格 -->
+        <div class="table-card">
+            <div class="table-header">
+                <div class="table-title">待处理诉求</div>
+                <div style="display:flex;gap:8px;">
+                    <div class="table-search"><span>🔍</span><input type="text" placeholder="搜索..." id="dashboardSearch"></div>
+                    <button class="table-btn primary" onclick="navigateTo('appeal')">全部诉求 ›</button>
+                </div>
+            </div>
+            <table><thead><tr><th>编号</th><th>姓名</th><th>类型</th><th>内容</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="dashboardTable"></tbody></table>
+            <div class="pagination">
+                <div class="page-btn disabled">‹</div>
+                <div class="page-btn active">1</div>
+                <div class="page-btn">2</div>
+                <div class="page-btn">3</div>
+                <div class="page-btn">›</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 党群家 -->
+    <div class="page-content" id="page-party">
+        <div class="breadcrumb">首页 › 党群家</div>
+        <div class="title-bar"><h2>党群家</h2><button class="btn-primary">+ 添加党员</button></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFEBEE;">🎗️</div><div class="stat-value">86</div><div class="stat-label">党员总数</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">✅</div><div class="stat-value">82</div><div class="stat-label">已报到</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏱️</div><div class="stat-value">1,234h</div><div class="stat-label">本月服务</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#F3E5F5;">🏆</div><div class="stat-value">Top3</div><div class="stat-label">平均排名</div></div>
+        </div>
+        <div class="list-card">
+            <div class="list-item" style="background:#FFF8F5;"><div class="list-item-icon" style="background:#FFEBEE;">🎗️</div><div class="list-item-content"><div class="list-item-title">志愿服务活动管理</div><div class="list-item-desc">发布和管理志愿服务活动</div></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#FFF3E0;">⭐</div><div class="list-item-content"><div class="list-item-title">微心愿管理</div><div class="list-item-desc">查看和管理居民微心愿</div></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#F3E5F5;">🏆</div><div class="list-item-content"><div class="list-item-title">党员考核评价</div><div class="list-item-desc">季度考核和排名</div></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#E8F5E9;">📬</div><div class="list-item-content"><div class="list-item-title">书记信箱</div><div class="list-item-desc">查看居民来信 <span class="sidebar-badge">3</span></div></div></div>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">党员列表</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索党员..."></div><button class="table-btn primary">+ 添加党员</button></div></div>
+            <table><thead><tr><th>ID</th><th>姓名</th><th>支部</th><th>职务</th><th>积分</th><th>服务时长</th><th>状态</th><th>操作</th></tr></thead><tbody id="partyTable"></tbody></table>
+        </div>
+    </div>
+
+    <!-- 马上办 -->
+    <div class="page-content" id="page-appeal">
+        <div class="breadcrumb">首页 › 马上办</div>
+        <div class="title-bar"><h2>马上办 - 诉求处理</h2><button class="btn-primary" onclick="openModal('addModal')">+ 新增诉求</button></div>
+
+        <!-- 流程面板 -->
+        <div class="flow-panel">
+            <div class="flow-title">诉求处理流程</div>
+            <div class="flow-steps">
+                <div class="flow-step done"><div class="flow-step-icon">✓</div><div class="flow-step-label">居民提交</div></div>
+                <div class="flow-step current"><div class="flow-step-icon">2</div><div class="flow-step-label">网格员派单</div></div>
+                <div class="flow-step"><div class="flow-step-icon">3</div><div class="flow-step-label">物业处理</div></div>
+                <div class="flow-step"><div class="flow-step-icon">4</div><div class="flow-step-label">居民确认</div></div>
+                <div class="flow-step"><div class="flow-step-icon">5</div><div class="flow-step-label">评价归档</div></div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFEBEE;">📋</div><div class="stat-value">156</div><div class="stat-label">诉求总数</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏳</div><div class="stat-value">12</div><div class="stat-label">待派单</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">🔧</div><div class="stat-value">89</div><div class="stat-label">处理中</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">✅</div><div class="stat-value">55</div><div class="stat-label">已完成</div></div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-header">
+                <div class="table-title">诉求列表</div>
+                <div style="display:flex;gap:8px;">
+                    <div class="table-search"><span>🔍</span><input type="text" placeholder="搜索诉求..."></div>
+                    <select class="table-btn" style="padding:6px 10px;">
+                        <option>全部状态</option><option>待派单</option><option>处理中</option><option>已完成</option>
+                    </select>
+                </div>
+            </div>
+            <table><thead><tr><th>编号</th><th>姓名</th><th>类型</th><th>内容</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="appealTable"></tbody></table>
+            <div class="pagination">
+                <div class="page-btn disabled">‹</div>
+                <div class="page-btn active">1</div>
+                <div class="page-btn">2</div>
+                <div class="page-btn">3</div>
+                <div class="page-btn">›</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 约服务 -->
+    <div class="page-content" id="page-service">
+        <div class="breadcrumb">首页 › 约服务</div>
+        <div class="title-bar"><h2>约服务</h2><button class="btn-primary">+ 新增服务商</button></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">🔧</div><div class="stat-value">28</div><div class="stat-label">服务商入驻</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">✅</div><div class="stat-value">25</div><div class="stat-label">已入驻</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏳</div><div class="stat-value">3</div><div class="stat-label">待入驻</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#F3E5F5;">📋</div><div class="stat-value">512</div><div class="stat-label">本月订单</div></div>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">服务商列表</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索名称..."></div><button class="table-btn primary">+ 新增服务商</button></div></div>
+            <table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>均价</th><th>评分</th><th>接单</th><th>状态</th><th>操作</th></tr></thead><tbody id="providerTable"></tbody></table>
+        </div>
+    </div>
+
+    <!-- 红色便民仓 -->
+    <div class="page-content" id="page-warehouse">
+        <div class="breadcrumb">首页 › 红色便民仓</div>
+        <div class="title-bar"><h2>🏪 红色便民仓 - 服务商管理</h2><button class="btn-primary">+ 新增服务商</button></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFEBEE;">🏪</div><div class="stat-value">28</div><div class="stat-label">全部商家</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">✅</div><div class="stat-value">25</div><div class="stat-label">已入驻</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏳</div><div class="stat-value">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">⭐</div><div class="stat-value">4.8</div><div class="stat-label">平均评分</div></div>
+        </div>
+        <div class="list-card" style="background:#FFF8F5;border-left:3px solid var(--primary);margin-bottom:16px;">
+            <div style="padding:14px 16px;">
+                <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;">办事标准承诺</div>
+                <div style="font-size:12px;color:var(--text-secondary);line-height:2;">1. <strong>锁类/开锁类：</strong>明码标价，党员志愿免费服务<br>2. <strong>水电维修类：</strong>双人以上处理，诚信经营，明码标价<br>3. <strong>家政类（A级和B级）：</strong>需配备专职管家一人</div>
+            </div>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">服务商列表</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索名称..."></div><button class="table-btn primary">+ 新增服务商</button></div></div>
+            <table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>价格</th><th>党员均价</th><th>评分</th><th>接单</th><th>入驻状态</th><th>公示状态</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#P001</td><td>开锁王</td><td>开锁</td><td>50元起</td><td>党员价40元</td><td>⭐4.9</td><td>328</td><td><span class="status done">已入驻</span></td><td><span class="status done">公示</span></td><td><button class="table-btn">详情</button></td></tr>
+                <tr><td>#P002</td><td>水电维修专业服务</td><td>水电</td><td>80元起</td><td>党员价60元</td><td>⭐4.8</td><td>156</td><td><span class="status done">已入驻</span></td><td><span class="status done">公示</span></td><td><button class="table-btn">详情</button></td></tr>
+                <tr><td>#P003</td><td>家政公司</td><td>家政</td><td>60元起</td><td>党员价50元</td><td>⭐4.7</td><td>512</td><td><span class="status done">已入驻</span></td><td><span class="status done">公示</span></td><td><button class="table-btn">详情</button></td></tr>
+                <tr><td>#P004</td><td>幸福搬家服务</td><td>搬家</td><td>150元起</td><td>待定</td><td>⭐4.6</td><td>89</td><td><span class="status pending">待审核</span></td><td><span style="color:#9CA3AF;">待审</span></td><td><button class="table-btn primary">审核</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 政务自助站 -->
+    <div class="page-content" id="page-govstation">
+        <div class="breadcrumb">首页 › 政务自助站</div>
+        <div class="title-bar"><h2>🏛️ 政务自助站 - 事项配置</h2><button class="btn-primary">+ 新增事项</button></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">🏛️</div><div class="stat-value">6</div><div class="stat-label">配置事项</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">📍</div><div class="stat-value">3</div><div class="stat-label">已配置</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏳</div><div class="stat-value">3</div><div class="stat-label">待审核</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#F3E5F5;">👥</div><div class="stat-value">156</div><div class="stat-label">有效预约</div></div>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">政务事项列表</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索事项..."></div><button class="table-btn primary">+ 新增事项</button></div></div>
+            <table><thead><tr><th>ID</th><th>事项</th><th>承办部门</th><th>办理时限</th><th>办理时间</th><th>状态</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#G001</td><td>社保查询</td><td>人社局窗口</td><td>5-15工作日</td><td>法定工作日</td><td><span class="status done">已上线</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#G002</td><td>医保缴费证明</td><td>服务中心</td><td>3-5工作日</td><td>限时办理</td><td><span class="status done">已上线</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#G003</td><td>公积金查询</td><td>建设局</td><td>3工作日</td><td>法定工作日</td><td><span class="status done">已上线</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#G004</td><td>房产证明</td><td>房产局</td><td>15工作日</td><td>法定工作日</td><td><span class="status pending">待上线</span></td><td><button class="table-btn primary">审核</button></td></tr>
+                <tr><td>#G005</td><td>户籍证明</td><td>公安局</td><td>即时办理</td><td>法定工作日</td><td><span class="status pending">待上线</span></td><td><button class="table-btn primary">审核</button></td></tr>
+                <tr><td>#G006</td><td>车管业务</td><td>车管所</td><td>按需</td><td>法定工作日</td><td><span class="status pending">待上线</span></td><td><button class="table-btn primary">审核</button></tr>
+            </tbody></table>
+        </div>
+        <div class="list-card" style="margin-top:14px;">
+            <div class="table-header"><div class="table-title">便民服务网点</div><div style="display:flex;gap:8px;"><button class="table-btn primary">+ 新增网点</button></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#E8F5E9;">✅</div><div class="list-item-content"><div class="list-item-title">幸福小区党群服务中心 <span class="status done" style="margin-left:6px;">已配置</span></div><div class="list-item-desc">距离用户 200m</div></div><button class="table-btn">编辑</button></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#E3F2FD;">✅</div><div class="list-item-content"><div class="list-item-title">长江路党群服务站</div><div class="list-item-desc">距离用户 1.2km</div></div><button class="table-btn">编辑</button></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#FFF3E0;">✅</div><div class="list-item-content"><div class="list-item-title">长江路办事处综合服务厅</div><div class="list-item-desc">距离用户 500m</div></div><button class="table-btn">编辑</button></div>
+        </div>
+    </div>
+
+    <!-- 邻里圈 -->
+    <div class="page-content" id="page-community">
+        <div class="breadcrumb">首页 › 邻里圈</div>
+        <div class="title-bar"><h2>邻里圈</h2><button class="btn-primary">+ 创建投票</button></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#F3E5F5;">💬</div><div class="stat-value">1,234</div><div class="stat-label">帖子总数</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">🤝</div><div class="stat-value">856</div><div class="stat-label">今日活跃</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">🗳️</div><div class="stat-value">12</div><div class="stat-label">进行中投票</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">✅</div><div class="stat-value">45</div><div class="stat-label">互助记录</div></div>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">投票列表</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索投票..."></div><button class="table-btn primary">+ 创建投票</button></div></div>
+            <table><thead><tr><th>ID</th><th>标题</th><th>类型</th><th>状态</th><th>参与</th><th>截止</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#V001</td><td>小区公共收益使用方案</td><td>公共收益</td><td><span class="status pending">进行中</span></td><td>23人</td><td>04-25</td><td><button class="table-btn">查看</button></td></tr>
+                <tr><td>#V002</td><td>3号楼加装电梯方案</td><td>公共设施</td><td><span class="status done">已通过(78%)</span></td><td>86人</td><td>04-10</td><td><button class="table-btn">查看</button></td></tr>
+                <tr><td>#V003</td><td>垃圾分类定时投放</td><td>环境治理</td><td><span class="status done">已通过(85%)</span></td><td>92人</td><td>04-01</td><td><button class="table-btn">查看</button></td></tr>
+                <tr><td>#V004</td><td>引进智能快递柜</td><td>便民服务</td><td><span class="status danger">未通过(42%)</span></td><td>68人</td><td>12-10</td><td><button class="table-btn">查看</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 评实效 -->
+    <div class="page-content" id="page-rating">
+        <div class="breadcrumb">首页 › 评实效</div>
+        <div class="title-bar"><h2>评实效</h2><button class="btn-primary">+ 积分规则</button></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFEBEE;">⭐</div><div class="stat-value">4.8</div><div class="stat-label">平均评分</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">📋</div><div class="stat-value">1,234</div><div class="stat-label">评价总数</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">🎁</div><div class="stat-value">156,780</div><div class="stat-label">积分总量</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">🏆</div><div class="stat-value">28</div><div class="stat-label">获奖订单</div></div>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">最新评价</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索评价..."></div></div></div>
+            <table><thead><tr><th>评价人</th><th>服务商</th><th>服务类型</th><th>评分</th><th>内容</th><th>时间</th></tr></thead><tbody>
+                <tr><td>张先生</td><td>开锁王</td><td>开锁</td><td><span style="color:#F59E0B;">⭐⭐⭐⭐⭐</span> (5.0)</td><td>一分钟内上门，真正便民！</td><td>04-17 14:30</td></tr>
+                <tr><td>李女士</td><td>水电维修专业服务</td><td>水电</td><td><span style="color:#F59E0B;">⭐⭐⭐⭐</span> (4.5)</td><td>报价合理，服务周到</td><td>04-16 10:15</td></tr>
+                <tr><td>王先生</td><td>家政公司</td><td>家政</td><td><span style="color:#F59E0B;">⭐⭐⭐⭐⭐</span> (5.0)</td><td>非常满意，会再来</td><td>04-15 16:00</td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 积分规则 -->
+    <div class="page-content" id="page-points-rules">
+        <div class="breadcrumb">首页 › 积分规则</div>
+        <div class="title-bar"><h2>🎁 积分规则配置</h2><button class="btn-primary">+ 新增规则</button></div>
+        <div class="table-card" style="margin-bottom:16px;">
+            <div class="table-header"><div class="table-title">积分获取规则</div><button class="btn-primary" style="font-size:12px;padding:6px 12px;">+ 新增规则</button></div>
+            <table><thead><tr><th>ID</th><th>行为</th><th>积分</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#PR001</td><td>上报诉求</td><td><span style="color:var(--success);font-weight:700;">+5积分</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PR002</td><td>参与投票/议政</td><td><span style="color:var(--success);font-weight:700;">+2积分</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PR003</td><td>逆向评价成功</td><td><span style="color:var(--success);font-weight:700;">+5积分</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PR004</td><td>志愿服务</td><td><span style="color:var(--success);font-weight:700;">+10积分</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PR005</td><td>认领微心愿</td><td><span style="color:var(--success);font-weight:700;">+20积分</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PR006</td><td>发布邻里互助</td><td><span style="color:var(--success);font-weight:700;">+5积分</span></td><td><button class="table-btn">编辑</button></td></tr>
+            </tbody></table>
+        </div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">积分兑换规则</div><button class="btn-primary" style="font-size:12px;padding:6px 12px;">+ 新增兑换</button></div>
+            <table><thead><tr><th>ID</th><th>商品</th><th>所需积分</th><th>库存</th><th>状态</th><th>操作</th></tr></thead><tbody>
+                <tr><td>#PG001</td><td>精选小礼品</td><td><span style="color:var(--warning);font-weight:700;">200积分</span></td><td>500个</td><td><span class="status done">上架</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PG002</td><td>咖啡券</td><td><span style="color:var(--warning);font-weight:700;">100积分</span></td><td>200张</td><td><span class="status done">上架</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PG003</td><td>洗车券</td><td><span style="color:var(--warning);font-weight:700;">300积分</span></td><td>100张</td><td><span class="status done">上架</span></td><td><button class="table-btn">编辑</button></td></tr>
+                <tr><td>#PG004</td><td>电动自行车</td><td><span style="color:var(--warning);font-weight:700;">5000积分</span></td><td>10辆</td><td><span class="status pending">待上架</span></td><td><button class="table-btn primary">审核</button></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <!-- 数据分析 -->
+    <div class="page-content" id="page-data">
+        <div class="breadcrumb">首页 › 数据分析</div>
+        <div class="title-bar"><h2>数据分析</h2></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFEBEE;">📈</div><div class="stat-value">94.2%</div><div class="stat-label">平均办结率</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#FFF3E0;">⏱️</div><div class="stat-value">4.2h</div><div class="stat-label">平均处理时长</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E8F5E9;">⭐</div><div class="stat-value">4.8</div><div class="stat-label">平均满意度</div></div>
+            <div class="stat-card"><div class="stat-card-icon" style="background:#E3F2FD;">👥</div><div class="stat-value">2,345</div><div class="stat-label">活跃用户</div></div>
+        </div>
+        <div class="charts-row">
+            <div class="chart-card">
+                <div class="chart-title">月度诉求趋势</div>
+                <div class="chart-bars">
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:60px;background:linear-gradient(to top, var(--info), #1976D2);"><span class="chart-bar-value">120</span></div><span class="chart-bar-label">1月</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:70px;background:linear-gradient(to top, var(--info), #1976D2);"><span class="chart-bar-value">140</span></div><span class="chart-bar-label">2月</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:80px;background:linear-gradient(to top, var(--info), #1976D2);"><span class="chart-bar-value">156</span></div><span class="chart-bar-label">3月</span></div>
+                    <div class="chart-bar-wrapper"><div class="chart-bar" style="height:90px;background:linear-gradient(to top, var(--primary), #D4524A);"><span class="chart-bar-value">178</span></div><span class="chart-bar-label">4月</span></div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">满意度分布</div>
+                <div style="padding-top:10px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--success);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">满意</span><span style="font-size:12px;font-weight:600;">85%</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--info);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">一般</span><span style="font-size:12px;font-weight:600;">10%</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;border-radius:2px;background:var(--warning);flex-shrink:0;"></div><span style="font-size:12px;flex:1;">不满意</span><span style="font-size:12px;font-weight:600;">5%</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公告管理 -->
+    <div class="page-content" id="page-notice">
+        <div class="breadcrumb">首页 › 公告管理</div>
+        <div class="title-bar"><h2>公告管理</h2><button class="btn-primary">+ 发布公告</button></div>
+        <div class="list-card">
+            <div class="table-header"><div class="table-title">公告列表</div><button class="btn-primary" style="font-size:12px;padding:6px 12px;">+ 发布公告</button></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#FFEBEE;">📢</div><div class="list-item-content"><div class="list-item-title">党员大会定于4月25日召开</div><div class="list-item-desc">2026-04-18 08:00 · 已发布 · 阅读 1,234</div></div><button class="table-btn">编辑</button></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#E3F2FD;">🎗️</div><div class="list-item-content"><div class="list-item-title">小区公共收益使用方案投票进行中</div><div class="list-item-desc">2026-04-17 10:00 · 进行中 · 阅读 2,345</div></div><button class="table-btn">编辑</button></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#FFF3E0;">🎁</div><div class="list-item-content"><div class="list-item-title">端午节活动开始报名</div><div class="list-item-desc">2026-04-16 14:00 · 报名中 · 阅读 876</div></div><button class="table-btn">编辑</button></div>
+        </div>
+    </div>
+
+    <!-- 系统设置 -->
+    <div class="page-content" id="page-settings">
+        <div class="breadcrumb">首页 › 系统设置</div>
+        <div class="title-bar"><h2>系统设置</h2></div>
+        <div class="list-card">
+            <div class="list-item"><div class="list-item-icon" style="background:#E8F5E9;">👥</div><div class="list-item-content"><div class="list-item-title">账号管理</div><div class="list-item-desc">管理员账号设置、修改密码</div></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#E3F2FD;">🎨</div><div class="list-item-content"><div class="list-item-title">界面设置</div><div class="list-item-desc">主题、Logo、导航栏配置</div></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#FFF3E0;">🔔</div><div class="list-item-content"><div class="list-item-title">通知设置</div><div class="list-item-desc">消息推送、短信邮件配置</div></div></div>
+            <div class="list-item"><div class="list-item-icon" style="background:#F3E5F5;">🔒</div><div class="list-item-content"><div class="list-item-title">权限管理</div><div class="list-item-desc">角色权限、功能开关配置</div></div></div>
+        </div>
+    </div>
+
+    <!-- 操作日志 -->
+    <div class="page-content" id="page-logs">
+        <div class="breadcrumb">首页 › 操作日志</div>
+        <div class="title-bar"><h2>操作日志</h2></div>
+        <div class="table-card">
+            <div class="table-header"><div class="table-title">操作记录</div><div style="display:flex;gap:8px;"><div class="table-search"><span>🔍</span><input type="text" placeholder="搜索操作..."></div></div></div>
+            <table><thead><tr><th>时间</th><th>用户</th><th>操作</th><th>IP</th><th>结果</th></tr></thead><tbody>
+                <tr><td>2026-04-18 16:30</td><td>管理员</td><td>新增服务商「幸福搬家服务」</td><td>192.168.1.100</td><td><span class="status done">成功</span></td></tr>
+                <tr><td>2026-04-18 15:20</td><td>管理员</td><td>审核通过诉求 #AP24041801</td><td>192.168.1.100</td><td><span class="status done">成功</span></td></tr>
+                <tr><td>2026-04-18 14:10</td><td>管理员</td><td>发布公告「党员大会通知」</td><td>192.168.1.100</td><td><span class="status done">成功</span></td></tr>
+                <tr><td>2026-04-18 11:05</td><td>管理员</td><td>登录系统</td><td>192.168.1.100</td><td><span class="status done">成功</span></td></tr>
+            </tbody></table>
+        </div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div class="modal-overlay" id="addModal">
+    <div class="modal">
+        <div class="modal-header">新增诉求<div class="modal-close" onclick="closeModal('addModal')">×</div></div>
+        <div class="modal-body">
+            <div class="form-group"><div class="form-label">居民姓名 *</div><input class="form-input" placeholder="请输入姓名"></div>
+            <div class="form-group"><div class="form-label">联系电话 *</div><input class="form-input" placeholder="请输入手机号"></div>
+            <div class="form-group"><div class="form-label">诉求类型 *</div><select class="form-input"><option>请选择类型</option><option>物业类</option><option>治安类</option><option>环境类</option><option>其他类</option></select></div>
+            <div class="form-group"><div class="form-label">诉求内容 *</div><textarea class="form-input" rows="4" placeholder="请详细描述诉求内容"></textarea></div>
+        </div>
+        <div class="modal-footer">
+            <button class="table-btn" onclick="closeModal('addModal')">取消</button>
+            <button class="table-btn primary" onclick="doAddAppeal()">提交</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<script>
+// ====== 核心导航 ======
+function navigateTo(pageId) {
+    // 清除所有高亮
+    var sidebarItems = document.querySelectorAll('.sidebar-item');
+    for (var i = 0; i < sidebarItems.length; i++) {
+        sidebarItems[i].classList.remove('active');
+    }
+    var pageContents = document.querySelectorAll('.page-content');
+    for (var j = 0; j < pageContents.length; j++) {
+        pageContents[j].classList.remove('active');
+    }
+    // 激活对应侧边栏
+    var sb = document.querySelector('[data-page="' + pageId + '"]');
+    if (sb) sb.classList.add('active');
+    // 激活对应页面
+    var pg = document.getElementById('page-' + pageId);
+    if (pg) pg.classList.add('active');
+}
+
+// ====== 弹窗 ======
+function openModal(id) {
+    var m = document.getElementById(id);
+    if (m) m.classList.add('active');
+}
+function closeModal(id) {
+    var m = document.getElementById(id);
+    if (m) m.classList.remove('active');
+}
+
+// ====== Toast ======
+function showToast(msg) {
+    var t = document.getElementById('toastMsg');
+    if (t) { t.textContent = msg; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500); }
+}
+
+// ====== 提交诉求 ======
+function doAddAppeal() {
+    showToast('诉求提交成功！');
+    closeModal('addModal');
+}
+
+// ====== 渲染数据 ======
+function renderDashboard() {
+    var d = [
+        {id:'AP24041801',name:'张先生',type:'物业类',content:'楼道灯不亮',status:'待派单',statusClass:'pending',time:'2026-04-18 10:30'},
+        {id:'AP24041802',name:'李女士',type:'物业类',content:'水表故障',status:'处理中',statusClass:'doing',time:'2026-04-18 09:15'},
+        {id:'AP24041803',name:'王先生',type:'物业类',content:'停车位争议',status:'待处理',statusClass:'pending',time:'2026-04-18 08:50'},
+        {id:'AP24041704',name:'陈女士',type:'物业类',content:'门禁故障',status:'已完成',statusClass:'done',time:'2026-04-17 16:30'},
+        {id:'AP24041705',name:'赵先生',type:'物业类',content:'电梯噪音',status:'已完成',statusClass:'done',time:'2026-04-17 14:20'}
+    ];
+    var el = document.getElementById('dashboardTable');
+    if (!el) return;
+    var html = '';
+    for (var i = 0; i < d.length; i++) {
+        var r = d[i];
+        html += '<tr><td>' + r.id + '</td><td>' + r.name + '</td><td>' + r.type + '</td><td>' + r.content + '</td><td><span class="status ' + r.statusClass + '">' + r.status + '</span></td><td>' + r.time + '</td><td><button class="table-btn" onclick="navigateTo(\'appeal\')">查看</button></td></tr>';
+    }
+    el.innerHTML = html;
+}
+
+function renderParty() {
+    var d = [
+        {id:'P001',name:'陈建国',dept:'第一支部',role:'书记',score:1280,hours:'45h',status:'正常'},
+        {id:'P002',name:'王丽',dept:'第二支部',role:'委员',score:1156,hours:'38h',status:'正常'},
+        {id:'P003',name:'李明',dept:'第一支部',role:'党员',score:980,hours:'32h',status:'正常'},
+        {id:'P004',name:'张红',dept:'第三支部',role:'党员',score:876,hours:'28h',status:'正常'},
+        {id:'P005',name:'赵强',dept:'第一支部',role:'党员',score:765,hours:'25h',status:'正常'}
+    ];
+    var el = document.getElementById('partyTable');
+    if (!el) return;
+    var html = '';
+    for (var i = 0; i < d.length; i++) {
+        var r = d[i];
+        html += '<tr><td>' + r.id + '</td><td>' + r.name + '</td><td>' + r.dept + '</td><td>' + r.role + '</td><td>' + r.score + '</td><td>' + r.hours + '</td><td><span class="status done">' + r.status + '</span></td><td><button class="table-btn">查看</button></td></tr>';
+    }
+    el.innerHTML = html;
+}
+
+function renderAppeal() {
+    var d = [
+        {id:'AP24041801',name:'张先生',type:'物业类',content:'楼道灯不亮 - 3-2单元',status:'待派单',statusClass:'pending',time:'2026-04-18 10:30'},
+        {id:'AP24041802',name:'李女士',type:'物业类',content:'水表故障 - 4-1-201',status:'处理中',statusClass:'doing',time:'2026-04-18 09:15'},
+        {id:'AP24041803',name:'王先生',type:'物业类',content:'停车位争议 - 地下车库',status:'待处理',statusClass:'pending',time:'2026-04-18 08:50'},
+        {id:'AP24041704',name:'陈女士',type:'物业类',content:'门禁故障 - 2号楼',status:'已完成',statusClass:'done',time:'2026-04-17 16:30'}
+    ];
+    var el = document.getElementById('appealTable');
+    if (!el) return;
+    var html = '';
+    for (var i = 0; i < d.length; i++) {
+        var r = d[i];
+        var btn = r.status === '待派单' ? '<button class="table-btn primary" onclick="dispatchOrder(\'' + r.id + '\')">立即派单</button>' : '<button class="table-btn">查看</button>';
+        html += '<tr><td>' + r.id + '</td><td>' + r.name + '</td><td>' + r.type + '</td><td>' + r.content + '</td><td><span class="status ' + r.statusClass + '">' + r.status + '</span></td><td>' + r.time + '</td><td>' + btn + '</td></tr>';
+    }
+    el.innerHTML = html;
+}
+
+function dispatchOrder(id) {
+    showToast('派单成功！诉求编号: ' + id);
+}
+
+function renderProvider() {
+    var d = [
+        {id:'#P001',name:'开锁王',type:'开锁',price:'50元起',rating:'4.9',orders:328,status:'已入驻',statusClass:'done'},
+        {id:'#P002',name:'水电维修专业服务',type:'水电',price:'80元起',rating:'4.8',orders:156,status:'已入驻',statusClass:'done'},
+        {id:'#P003',name:'家政公司',type:'家政',price:'60元起',rating:'4.7',orders:512,status:'已入驻',statusClass:'done'},
+        {id:'#P004',name:'幸福搬家服务',type:'搬家',price:'150元起',rating:'4.6',orders:89,status:'待入驻',statusClass:'pending'}
+    ];
+    var el = document.getElementById('providerTable');
+    if (!el) return;
+    var html = '';
+    for (var i = 0; i < d.length; i++) {
+        var r = d[i];
+        var btn = r.status === '待入驻' ? '<button class="table-btn primary">审核</button>' : '<button class="table-btn">详情</button>';
+        html += '<tr><td>' + r.id + '</td><td>' + r.name + '</td><td>' + r.type + '</td><td>' + r.price + '</td><td>' + r.rating + '</td><td>' + r.orders + '</td><td><span class="status ' + r.statusClass + '">' + r.status + '</span></td><td>' + btn + '</td></tr>';
+    }
+    el.innerHTML = html;
+}
+
+// ====== 事件绑定 ======
+document.querySelectorAll('.sidebar-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+        var pid = this.getAttribute('data-page');
+        if (pid) navigateTo(pid);
+    });
+});
+
+// 弹窗点击背景关闭
+document.querySelectorAll('.modal-overlay').forEach(function(m) {
+    m.addEventListener('click', function(e) {
+        if (e.target === m) m.classList.remove('active');
+    });
+});
+
+// ====== 初始化 ======
+function init() {
+    renderDashboard();
+    renderParty();
+    renderAppeal();
+    renderProvider();
+    // 更新时间
+    var t = document.getElementById('headerTime');
+    if (t) {
+        var now = new Date();
+        t.textContent = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+</script>
+</body>
+</html>
